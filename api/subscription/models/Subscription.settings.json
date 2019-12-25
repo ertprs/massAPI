@@ -1,0 +1,21 @@
+{
+  "connection": "default",
+  "collectionName": "subscriptions",
+  "info": {
+    "name": "subscription",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "comment": ""
+  },
+  "attributes": {
+    "email": {
+      "type": "string"
+    },
+    "date": {
+      "type": "date"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+    "smtp": {
+      "from": "gsusposicion@gmail.com",
+      "service": {
+        "name": "gmail",
+        "user": "gsusposicion@gmail.com",
+        "pass": "alfonsobarrientos2015"
+      }
+    }
+  }
+  

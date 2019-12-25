@@ -1,0 +1,38 @@
+{
+  "connection": "default",
+  "collectionName": "userphones",
+  "info": {
+    "name": "userphones",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": [
+      "created_at",
+      "updated_at"
+    ],
+    "comment": ""
+  },
+  "attributes": {
+    "phone": {
+      "type": "string"
+    },
+    "dateStart": {
+      "type": "date"
+    },
+    "dateEnd": {
+      "type": "date"
+    },
+    "emailSend": {
+      "type": "boolean"
+    },
+    "user": {
+      "model": "user",
+      "plugin": "users-permissions"
+    },
+    "prefix": {
+      "default": "+1",
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "connection": "default",
+  "collectionName": "payments",
+  "info": {
+    "name": "payment",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "comment": ""
+  },
+  "attributes": {
+    "startDate": {
+      "type": "date"
+    },
+    "automatic": {
+      "type": "boolean"
+    },
+    "messagesAvailable": {
+      "type": "integer"
+    },
+    "endDate": {
+      "type": "date"
+    },
+    "plansTypes": {
+      "enum": [
+        "basic",
+        "medium",
+        "high"
+      ],
+      "type": "enumeration"
+    },
+    "user": {
+      "model": "user",
+      "plugin": "users-permissions"
+    }
+  }
+}

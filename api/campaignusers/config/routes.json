@@ -1,0 +1,57 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/campaignusers",
+      "handler": "Campaignusers.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/campaignusers/count",
+      "handler": "Campaignusers.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/campaignusers/:id",
+      "handler": "Campaignusers.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/campaignusers",
+      "handler": "Campaignusers.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/campaignusers/:id",
+      "handler": "Campaignusers.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/campaignusers/:id",
+      "handler": "Campaignusers.delete",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/count-response",
+      "handler": "Campaignusers.getCount"
+    }
+  ]
+}

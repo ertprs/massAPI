@@ -1,0 +1,27 @@
+{
+  "connection": "default",
+  "collectionName": "senderdata",
+  "info": {
+    "name": "senderdata",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": [
+      "created_at",
+      "updated_at"
+    ],
+    "comment": ""
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "apitoken": {
+      "type": "string"
+    },
+    "Type": {
+      "type": "string"
+    }
+  }
+}

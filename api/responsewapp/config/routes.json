@@ -1,0 +1,67 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/responsewapps",
+      "handler": "Responsewapp.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/responsewapps/count",
+      "handler": "Responsewapp.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/responsewapps/:id",
+      "handler": "Responsewapp.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/responsewapps",
+      "handler": "Responsewapp.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/responsewapps/:id",
+      "handler": "Responsewapp.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/responsewapps/:id",
+      "handler": "Responsewapp.delete",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/wapphook",
+      "handler": "Responsewapp.hook"
+    },
+    {
+      "method": "POST",
+      "path": "/wapphookChatApi",
+      "handler": "Responsewapp.hookChatApi"
+    },
+    {
+      "method": "POST",
+      "path": "/wappapitoken",
+      "handler": "Responsewapp.setApiToken"
+    }
+  ]
+}

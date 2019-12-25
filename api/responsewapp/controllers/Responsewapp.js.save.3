@@ -1,0 +1,23 @@
+'use strict';
+
+/**
+ * Read the documentation (https://strapi.io/documentation/3.0.0-beta.x/guides/controllers.html#core-controllers)
+ * to customize this controller
+ */
+module.exports = {
+
+    hook: async (ctx) => {
+        let event = ctx.request.body;
+	if (event.type === "message" && event.data.body && !event.data.fromMe) {
+		let message = event.data.body
+		let knexQueryBuilder = strapi.connections.default;
+		let v_messages = await knexQueryBuilder.raw('SELECT * FROM responsewapps');
+
+		console.log(v_messages[0].filter((obj) => {
+			const regex = new RegExp('^' + obj.message)
+			if (message.match(regex) !== null) {
+
+		}))
+	}
+    }
+};

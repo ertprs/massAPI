@@ -1,0 +1,36 @@
+{
+  "connection": "default",
+  "collectionName": "bulkdata",
+  "info": {
+    "name": "bulkdata",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": [
+      "created_at",
+      "updated_at"
+    ],
+    "comment": ""
+  },
+  "attributes": {
+    "url": {
+      "type": "text"
+    },
+    "processed": {
+      "type": "boolean"
+    },
+    "start": {
+      "type": "date"
+    },
+    "end": {
+      "type": "date"
+    },
+    "campaign": {
+      "model": "campaign"
+    },
+    "whatsappMode": {
+      "type": "boolean"
+    }
+  }
+}

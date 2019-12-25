@@ -1,0 +1,64 @@
+{
+  "connection": "default",
+  "collectionName": "campaigns",
+  "info": {
+    "name": "campaign",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": [
+      "created_at",
+      "updated_at"
+    ],
+    "comment": ""
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "type": {
+      "enum": [
+        "sms",
+        "email"
+      ],
+      "type": "enumeration"
+    },
+    "start": {
+      "type": "date"
+    },
+    "end": {
+      "type": "date"
+    },
+    "status": {
+      "enum": [
+        "pending",
+        "canceled",
+        "finished"
+      ],
+      "type": "enumeration"
+    },
+    "message": {
+      "type": "text"
+    },
+    "html": {
+      "type": "text"
+    },
+    "sended": {
+      "type": "integer"
+    },
+    "topic": {
+      "type": "string"
+    },
+    "phoneNumber": {
+      "type": "string"
+    },
+    "prefix": {
+      "type": "string"
+    },
+    "user": {
+      "model": "user",
+      "plugin": "users-permissions"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "routes": [
+    {
+      "method": "POST",
+      "path": "/generate-number",
+      "handler": "generateNumber.generate",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

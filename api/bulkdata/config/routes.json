@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/bulkdata",
+      "handler": "Bulkdata.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/bulkdata/count",
+      "handler": "Bulkdata.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/bulkdata/:id",
+      "handler": "Bulkdata.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/bulkdata",
+      "handler": "Bulkdata.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/bulkdata/:id",
+      "handler": "Bulkdata.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/bulkdata/:id",
+      "handler": "Bulkdata.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

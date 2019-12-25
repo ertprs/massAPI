@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/historypayments",
+      "handler": "Historypayments.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/historypayments/count",
+      "handler": "Historypayments.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/historypayments/:id",
+      "handler": "Historypayments.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/historypayments",
+      "handler": "Historypayments.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/historypayments/:id",
+      "handler": "Historypayments.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/historypayments/:id",
+      "handler": "Historypayments.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

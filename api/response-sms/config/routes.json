@@ -1,0 +1,9 @@
+{
+  "routes": [
+    {
+      "method": "POST",
+      "path": "/response-sms",
+      "handler": "responseSms.setResponses"
+    }
+  ]
+}

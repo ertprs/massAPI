@@ -1,0 +1,46 @@
+{
+  "connection": "default",
+  "collectionName": "campaignusers",
+  "info": {
+    "name": "campaignusers",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": [
+      "created_at",
+      "updated_at"
+    ],
+    "comment": ""
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "lastName": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "additionalFields": {
+      "type": "json"
+    },
+    "email": {
+      "type": "email"
+    },
+    "response": {
+      "type": "string"
+    },
+    "Address": {
+      "type": "string"
+    },
+    "campaign": {
+      "model": "campaign"
+    },
+    "numberShipments": {
+      "type": "integer",
+      "default": "0"
+    }
+  }
+}

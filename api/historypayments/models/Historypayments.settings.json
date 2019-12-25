@@ -1,0 +1,46 @@
+{
+  "connection": "default",
+  "collectionName": "historypayments",
+  "info": {
+    "name": "historypayments",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": [
+      "created_at",
+      "updated_at"
+    ],
+    "comment": ""
+  },
+  "attributes": {
+    "date": {
+      "type": "date"
+    },
+    "currentPlan": {
+      "type": "string"
+    },
+    "dateStart": {
+      "type": "date"
+    },
+    "dateEnd": {
+      "type": "date"
+    },
+    "price": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "billingAddress": {
+      "type": "string"
+    },
+    "user": {
+      "model": "user",
+      "plugin": "users-permissions"
+    }
+  }
+}

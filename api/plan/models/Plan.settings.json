@@ -1,0 +1,30 @@
+{
+  "connection": "default",
+  "collectionName": "plans",
+  "info": {
+    "name": "plan",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": [
+      "created_at",
+      "updated_at"
+    ],
+    "comment": ""
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "price": {
+      "type": "float"
+    },
+    "description": {
+      "type": "json"
+    },
+    "order": {
+      "type": "integer"
+    }
+  }
+}

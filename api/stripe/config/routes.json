@@ -1,0 +1,28 @@
+{
+  "routes": [
+    {
+      "method": "POST",
+      "path": "/pay",
+      "handler": "Stripe.pay",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/webhook",
+      "handler": "Stripe.hook",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/getCounterSMS",
+      "handler": "Stripe.getCounterSMS",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

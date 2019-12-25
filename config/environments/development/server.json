@@ -1,0 +1,13 @@
+{
+  "host": "ec2-3-133-101-153.us-east-2.compute.amazonaws.com",
+  "port": 1337,
+  "proxy": {
+    "enabled": false
+  },
+  "cron": {
+    "enabled": false
+  },
+  "admin": {
+    "autoOpen": false
+  }
+}
