@@ -1,5 +1,5 @@
 {
-  "host": "ec2-3-133-101-153.us-east-2.compute.amazonaws.com",
+  "host": "13.59.11.156",
   "port": 1337,
   "proxy": {
     "enabled": false
