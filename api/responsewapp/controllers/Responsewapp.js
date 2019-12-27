@@ -93,8 +93,6 @@ async function sendMercuryMsg(event, obj) {
       json: true
     }
     request(options, function (error, response, body) {
-      console.log(response);
-
       if (error){
         console.log('error');
         console.log(error);
