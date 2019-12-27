@@ -35,7 +35,6 @@ module.exports = {
 
   },
   hookChatApi: async ctx => {
-    console.log('hook chat api');
     if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
       console.log('hook chat api');
       let event = ctx.request.body.messages[0];
