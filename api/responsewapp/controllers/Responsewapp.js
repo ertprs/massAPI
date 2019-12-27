@@ -80,7 +80,7 @@ async function sendMercuryMsg(event, obj) {
         instance: event.data.instance_number
       },
       headers: {
-        'cache-contro': 'no-cache',
+        'cache-control': 'no-cache',
         Connection: 'keep-alive',
         Accept: '*/*',
         'User-Agent': 'PostmanRuntime/7.20.1',
