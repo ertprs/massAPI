@@ -95,6 +95,7 @@ async function sendMercuryMsg(event, obj) {
         console.log(error);
         throw new Error(error);
       }
+      console.log('here');
       console.log(body);
     })
   }
