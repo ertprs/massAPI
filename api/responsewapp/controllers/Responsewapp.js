@@ -100,6 +100,7 @@ async function sendChatAPIMsg(event, obj) {
   var request = require("request");
   console.log('here');
   let senderData = await strapi.services.senderdata.findOne({ type: 'ChatAPI' });
+  console.log(senderData.name + '/sendMessage?token=' + senderData.api_token);
   var options = {
     method: "POST",
     url: senderData.name + '/sendMessage?token=' + senderData.api_token,
