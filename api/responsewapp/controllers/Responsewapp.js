@@ -74,7 +74,7 @@ async function sendMercuryMsg(event, obj) {
       method: "POST",
       url: "https://api.mercury.chat/sdk/whatsapp/sendMessage",
       qs: {
-        api_token: user.apitoken,
+        api_token: senderData.apitoken,
         instance: event.data.instance_number
       },
       headers: {
