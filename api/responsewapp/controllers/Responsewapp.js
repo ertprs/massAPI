@@ -16,7 +16,6 @@ module.exports = {
         "SELECT * FROM responsewapps where blocked=false order by 'order' asc;"
       );
 
-
       if (v_messages[0]) {
         var finded = v_messages[0].find(obj => {
           if (message.toUpperCase() === obj.message.toUpperCase()) {
@@ -70,7 +69,8 @@ async function sendMercuryMsg(event, obj) {
   var request = require("request");
   //let user = await strapi.services.senderdata.findOne({ type:  });
   let senderData = await strapi.services.senderdata.findOne({ type: 'Mercury' });
-
+  console.log(senderData);
+  console.log(event.data.instance_number)
   if (senderData) {
     var options = {
       method: 'POST',
