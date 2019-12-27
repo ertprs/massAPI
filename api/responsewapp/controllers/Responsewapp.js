@@ -13,7 +13,7 @@ module.exports = {
 
       let knexQueryBuilder = strapi.connections.default;
       let v_messages = await knexQueryBuilder.raw(
-        "SELECT * FROM responsewapps order by 'order' asc;"
+        "SELECT * FROM responsewapps where blocked=false order by 'order' asc;"
       );
 
 
@@ -44,7 +44,7 @@ module.exports = {
 
         let knexQueryBuilder = strapi.connections.default;
         let v_messages = await knexQueryBuilder.raw(
-          "SELECT * FROM responsewapps order by 'order' asc;"
+          "SELECT * FROM responsewapps where blocked=false order by 'order' asc;"
         );
 
         if (v_messages[0]) {
@@ -69,41 +69,48 @@ module.exports = {
 async function sendMercuryMsg(event, obj) {
   var request = require("request");
   //let user = await strapi.services.senderdata.findOne({ type:  });
+  let senderData = await strapi.services.senderdata.findOne({ type: 'Mercury' });
 
-  console.log(event);
-  console.log(event.data);
-  // var options = {
-  //   method: "POST",
-  //   url: " https://eu8.chat-api.com/instance86074/sendMessage?token=4kuv9u2yfxervwek",
-  //   body: { body: obj.response, phone: event.author.split("@")[0] },
-  //   json: true
-  // };
-
-  // request(options, function (error, response, body) {
-  //   if (error) throw new Error(error);
-
-  //   console.log(body);
-  // });
+  if (senderData) {
+    var options = {
+      method: 'POST',
+      url: 'https://api.mercury.chat/sdk/whatsapp/sendMessage',
+      qs: {
+        api_token: senderData.apitoken,
+        instance: event.data.instance_number
+      },
+      headers: {
+        'cache-contro': 'no-cache',
+        Connection: 'keep-alive',
+        Accept: '*/*',
+        'User-Agent': 'PostmanRuntime/7.20.1',
+        'Content-Type': 'application/json'
+      },
+      body: {
+        body: obj.response,
+        phone: event.data.author.split('@')[0]
+      },
+      json: true
+    }
+    request(options, function (error, response, body) {
+      if (error) throw new Error(error);
+      console.log(body);
+    })
+  }
 }
 
 async function sendChatAPIMsg(event, obj) {
   var request = require("request");
-  let user = await strapi.services.senderdata.findOne({ id: 1 });
-  // console.log('entra')
+  let senderData = await strapi.services.senderdata.findOne({ type: 'ChatAPI' });
   var options = {
     method: "POST",
-    url: " https://eu8.chat-api.com/instance86074/sendMessage?token=4kuv9u2yfxervwek",
+    url: 'https://eu8.chat-api.com/instance' + senderData.name + '/sendMessage?token=' + senderData.api_token,
     body: { body: obj.response, phone: event.author.split("@")[0] },
     json: true
   };
 
-  // console.log(event);
-  // console.log(obj.response);
-  // console.log(event.author.split("@")[0]);
-
   request(options, function (error, response, body) {
     if (error) throw new Error(error);
-
     console.log(body);
   });
 }
