@@ -50,8 +50,8 @@
     },
     {
       "method": "POST",
-      "path": "/wapphook",
-      "handler": "Responsewapp.hook"
+      "path": "/wapphookMercuryApi",
+      "handler": "Responsewapp.hookMercuryApi"
     },
     {
       "method": "POST",

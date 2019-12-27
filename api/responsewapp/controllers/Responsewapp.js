@@ -5,9 +5,7 @@
  */
 
 module.exports = {
-  hook: async ctx => {
-    console.log('hook');
-    console.log(ctx.request.body);
+  hookMercuryApi: async ctx => {
     let event = ctx.request.body;
 
     if (event.type === "message" && event.data.body && !event.data.fromMe) {
@@ -18,7 +16,6 @@ module.exports = {
         "SELECT * FROM responsewapps order by 'order' asc;"
       );
 
-      console.log(v_messages)
 
       if (v_messages[0]) {
         var finded = v_messages[0].find(obj => {
@@ -30,7 +27,7 @@ module.exports = {
           finded = v_messages[0].find(obj => obj.message === '*');
         }
         if (finded) {
-          sendMsg(event, finded)
+          sendMercuryMsg(event, finded)
         }
       }
     }
@@ -39,10 +36,8 @@ module.exports = {
 
   },
   hookChatApi: async ctx => {
-    console.log('hook');
     if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
       let event = ctx.request.body.messages[0];
-      // console.log(event);
 
       if (event.type === "chat" && event.body && !event.fromMe) {
         let message = event.body;
@@ -51,8 +46,6 @@ module.exports = {
         let v_messages = await knexQueryBuilder.raw(
           "SELECT * FROM responsewapps order by 'order' asc;"
         );
-
-        // console.log(v_messages)
 
         if (v_messages[0]) {
           var finded = v_messages[0].find(obj => {
@@ -64,7 +57,7 @@ module.exports = {
             finded = v_messages[0].find(obj => obj.message === '*');
           }
           if (finded) {
-            sendMsg(event, finded)
+            sendChatAPIMsg(event, finded)
           }
         }
       }
@@ -73,7 +66,27 @@ module.exports = {
 };
 
 
-async function sendMsg(event, obj) {
+async function sendMercuryMsg(event, obj) {
+  var request = require("request");
+  //let user = await strapi.services.senderdata.findOne({ type:  });
+
+  console.log(event);
+  console.log(event.data);
+  // var options = {
+  //   method: "POST",
+  //   url: " https://eu8.chat-api.com/instance86074/sendMessage?token=4kuv9u2yfxervwek",
+  //   body: { body: obj.response, phone: event.author.split("@")[0] },
+  //   json: true
+  // };
+
+  // request(options, function (error, response, body) {
+  //   if (error) throw new Error(error);
+
+  //   console.log(body);
+  // });
+}
+
+async function sendChatAPIMsg(event, obj) {
   var request = require("request");
   let user = await strapi.services.senderdata.findOne({ id: 1 });
   // console.log('entra')
