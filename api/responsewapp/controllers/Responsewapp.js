@@ -102,7 +102,7 @@ async function sendChatAPIMsg(event, obj) {
   let senderData = await strapi.services.senderdata.findOne({ type: 'ChatAPI' });
   var options = {
     method: "POST",
-    url: 'https://eu87.chat-api.com/instance' + senderData.name + '/sendMessage?token=' + senderData.api_token,
+    url: senderData.name + '/sendMessage?token=' + senderData.api_token,
     body: { body: obj.response, phone: event.author.split("@")[0] },
     json: true
   };
