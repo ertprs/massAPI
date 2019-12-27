@@ -73,31 +73,28 @@ async function sendMercuryMsg(event, obj) {
   console.log(event.data.instance_number)
   if (senderData) {
     var options = {
-      method: 'POST',
-      url: 'https://api.mercury.chat/sdk/whatsapp/sendMessage',
+      method: "POST",
+      url: "https://api.mercury.chat/sdk/whatsapp/sendMessage",
       qs: {
-        api_token: senderData.apitoken,
+        api_token: user.apitoken,
         instance: event.data.instance_number
       },
       headers: {
-        'cache-control': 'no-cache',
-        Connection: 'keep-alive',
-        Accept: '*/*',
-        'User-Agent': 'PostmanRuntime/7.20.1',
-        'Content-Type': 'application/json'
+        "cache-control": "no-cache",
+        Connection: "keep-alive",
+        Accept: "*/*",
+        "User-Agent": "PostmanRuntime/7.20.1",
+        "Content-Type": "application/json"
       },
-      body: {
-        body: obj.response,
-        phone: event.data.author.split('@')[0]
-      },
+      body: { body: obj.response, phone: event.data.author.split("@")[0] },
       json: true
     }
     request(options, function (error, response, body) {
-      if (error){
+      if (error) {
         console.log('error');
         console.log(error);
         throw new Error(error);
-      } 
+      }
       console.log(body);
     })
   }
