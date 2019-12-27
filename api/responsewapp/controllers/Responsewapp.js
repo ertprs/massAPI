@@ -69,20 +69,29 @@ async function sendMercuryMsg(event, obj) {
   var request = require("request");
   //let user = await strapi.services.senderdata.findOne({ type:  });
   let senderData = await strapi.services.senderdata.findOne({ type: 'Mercury' });
-  console.log("https://api.mercury.chat/sdk/whatsapp/sendMessage?api_token=" + senderData.apitoken + "&instance=" + event.data.instance_number);
   if (senderData) {
     var options = {
       method: "POST",
-      url: "https://api.mercury.chat/sdk/whatsapp/sendMessage?api_token=" + senderData.apitoken + "&instance=" + event.data.instance_number,
+      url: "https://api.mercury.chat/sdk/whatsapp/sendMessage",
+      qs: {
+        api_token: user.apitoken,
+        instance: event.data.instance_number
+      },
+      headers: {
+        "cache-control": "no-cache",
+        Connection: "keep-alive",
+        Accept: "*/*",
+        "User-Agent": "PostmanRuntime/7.20.1",
+        "Content-Type": "application/json"
+      },
       body: { body: obj.response, phone: event.data.author.split("@")[0] },
       json: true
-    }
+    };
     request(options, function (error, response, body) {
       if (error) {
         console.log('error');
       }
-      console.log('here');
-    })
+    });
   }
 }
 
