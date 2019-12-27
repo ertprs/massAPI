@@ -36,6 +36,7 @@ module.exports = {
   },
   hookChatApi: async ctx => {
     if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
+      console.log('hook chat api');
       let event = ctx.request.body.messages[0];
 
       if (event.type === "chat" && event.body && !event.fromMe) {
@@ -97,6 +98,7 @@ async function sendMercuryMsg(event, obj) {
 
 async function sendChatAPIMsg(event, obj) {
   var request = require("request");
+  console.log('here');
   let senderData = await strapi.services.senderdata.findOne({ type: 'ChatAPI' });
   var options = {
     method: "POST",
