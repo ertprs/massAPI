@@ -9,7 +9,7 @@ module.exports = {
     let event = ctx.request.body;
     if (event.type === "message" && event.data.body && !event.data.fromMe) {
       console.log('hook mercury api');
-      const finded = findMessage(event.data.body);
+      const finded = await findMessage(event.data.body);
       console.log(finded);
       if (finded) {
         sendMercuryMsg(event, finded)
@@ -24,7 +24,7 @@ module.exports = {
       let event = ctx.request.body.messages[0];
       if (event.type === "chat" && event.body && !event.fromMe) {
         console.log('hook chat api');
-        const finded = findMessage(event.body);
+        const finded = await findMessage(event.body);
         console.log(finded);
         if (finded) {
           sendChatAPIMsg(event, finded)
