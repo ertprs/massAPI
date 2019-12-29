@@ -35,6 +35,7 @@ module.exports = {
 };
 
 async function findMessage(message) {
+  let knexQueryBuilder = strapi.connections.default;
   let v_messages = await knexQueryBuilder.raw(
     "SELECT * FROM responsewapps where blocked=false order by 'order' asc;"
   );
