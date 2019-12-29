@@ -32,7 +32,7 @@ module.exports = {
   },
 };
 
-function findMessage(message) {
+async function findMessage(message) {
   let v_messages = await knexQueryBuilder.raw(
     "SELECT * FROM responsewapps where blocked=false order by 'order' asc;"
   );
