@@ -41,7 +41,7 @@ async function findMessage(message) {
   );
   if (v_messages[0]) {
     const asterik = v_messages[0].find(obj => obj.message === '*');
-    const asterik_order = 99999;
+    let asterik_order = 99999;
     if (asterik) {
       asterik_order = asterik.order;
     }
