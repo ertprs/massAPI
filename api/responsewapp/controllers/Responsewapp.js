@@ -7,27 +7,10 @@
 module.exports = {
   hookMercuryApi: async ctx => {
     let event = ctx.request.body;
-
     if (event.type === "message" && event.data.body && !event.data.fromMe) {
-      let message = event.data.body;
-
-      let knexQueryBuilder = strapi.connections.default;
-      let v_messages = await knexQueryBuilder.raw(
-        "SELECT * FROM responsewapps where blocked=false order by 'order' asc;"
-      );
-
-      if (v_messages[0]) {
-        var finded = v_messages[0].find(obj => {
-          if (message.toUpperCase() === obj.message.toUpperCase()) {
-            return obj
-          }
-        });
-        if (finded == undefined || finded == null) {
-          finded = v_messages[0].find(obj => obj.message === '*');
-        }
-        if (finded) {
-          sendMercuryMsg(event, finded)
-        }
+      const finded = findMessage(event.data.body);
+      if (finded) {
+        sendMercuryMsg(event, finded)
       }
     }
   },
@@ -40,30 +23,33 @@ module.exports = {
       let event = ctx.request.body.messages[0];
 
       if (event.type === "chat" && event.body && !event.fromMe) {
-        let message = event.body;
-
-        let knexQueryBuilder = strapi.connections.default;
-        let v_messages = await knexQueryBuilder.raw(
-          "SELECT * FROM responsewapps where blocked=false order by 'order' asc;"
-        );
-
-        if (v_messages[0]) {
-          var finded = v_messages[0].find(obj => {
-            if (message.toUpperCase() === obj.message.toUpperCase()) {
-              return obj
-            }
-          });
-          if (finded == undefined || finded == null) {
-            finded = v_messages[0].find(obj => obj.message === '*');
-          }
-          if (finded) {
-            sendChatAPIMsg(event, finded)
-          }
+        const finded = findMessage(event.body);
+        if (finded) {
+          sendChatAPIMsg(event, finded)
         }
       }
     }
   },
 };
+
+function findMessage(message) {
+  let v_messages = await knexQueryBuilder.raw(
+    "SELECT * FROM responsewapps where blocked=false order by 'order' asc;"
+  );
+  if (v_messages[0]) {
+    const asterik = v_messages[0].find(obj => obj.message === '*');
+    const asterik_order = 99999;
+    if (asterik) {
+      asterik_order = asterik.order;
+    }
+    const finded = v_messages[0].find(obj => obj.message.toUpperCase() === message.toUpperCase() && obj.order < asterik_order);
+    if (finded) {
+      return finded;
+    } else {
+      return asterik;
+    }
+  }
+}
 
 
 async function sendMercuryMsg(event, obj) {
