@@ -60,6 +60,11 @@
     },
     {
       "method": "POST",
+      "path": "/hookWrapper",
+      "handler": "Responsewapp.hookWrapperApi"
+    },
+    {
+      "method": "POST",
       "path": "/wappapitoken",
       "handler": "Responsewapp.setApiToken"
     }

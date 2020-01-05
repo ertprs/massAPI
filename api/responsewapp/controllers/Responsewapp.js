@@ -32,6 +32,21 @@ module.exports = {
       }
     }
   },
+
+  hookWrapperApi: async ctx => {
+    console.log('hook wrapper api');
+    if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
+      let event = ctx.request.body.messages[0];
+      if (event.type === "chat" && event.body && !event.fromMe) {
+        console.log('hook wrapper api');
+        const finded = await findMessage(event.body);
+        console.log(finded);
+        if (finded) {
+          sendWrapperAPIMsg(event, finded)
+        }
+      }
+    }
+  }
 };
 
 async function findMessage(message) {
@@ -101,4 +116,8 @@ async function sendChatAPIMsg(event, obj) {
     if (error) throw new Error(error);
     console.log(body);
   });
+}
+
+async function sendWrapperAPIMsg(event, obj) {
+
 }
