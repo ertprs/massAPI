@@ -10,7 +10,7 @@
         "port": 3306,
         "username": "root",
         "password": "root",
-        "charset": "utf8mb4_unicode_ci",
+        "charset": "utf8mb4_unicode_ci"
       },
       "options": {
         "debug": true,
@@ -22,7 +22,7 @@
           "createTimeoutMillis": 30000,
           "acquireTimeoutMillis": 30000
         },
-        "charset": "utf8mb4_unicode_ci",
+        "charset": "utf8mb4_unicode_ci"
       }
     }
   }
