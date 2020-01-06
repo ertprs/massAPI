@@ -42,7 +42,7 @@ module.exports = {
         const finded = await findMessage(event.body);
         console.log(finded);
         if (finded) {
-          sendWrapperAPIMsg(event, finded)
+          sendChatAPIMsg(event, finded)
         }
       }
     }
