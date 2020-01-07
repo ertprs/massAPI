@@ -35,16 +35,23 @@ module.exports = {
 
   hookWrapperApi: async ctx => {
     console.log('hook wrapper api');
-    if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
-      let event = ctx.request.body.messages[0];
-      if (event.type === "chat" && event.body && !event.fromMe) {
-        console.log('hook wrapper api');
-        const finded = await findMessage(event.body);
-        console.log(finded);
-        if (finded) {
-          sendChatAPIMsg(event, finded)
+    console.log('---------------------------');
+    console.log(ctx);
+    console.log('---------------------------');
+    try {
+      if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
+        let event = ctx.request.body.messages[0];
+        if (event.type === "chat" && event.body && !event.fromMe) {
+          console.log('hook wrapper api');
+          const finded = await findMessage(event.body);
+          console.log(finded);
+          if (finded) {
+            sendChatAPIMsg(event, finded)
+          }
         }
       }
+    } catch {
+      console.log('hook api error');
     }
   }
 };
