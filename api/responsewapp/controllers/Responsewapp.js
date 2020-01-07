@@ -39,6 +39,7 @@ module.exports = {
     console.log(ctx);
     console.log('---------------------------');
     try {
+      console.log(ctx.request.body);
       if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
         let event = ctx.request.body.messages[0];
         if (event.type === "chat" && event.body && !event.fromMe) {
