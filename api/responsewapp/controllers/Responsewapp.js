@@ -50,8 +50,11 @@ module.exports = {
           }
         }
       }
-    } catch {
+    } catch (e) {
       console.log('hook api error');
+      console.log('---------------------------');
+      console.log(e);
+      console.log('---------------------------');
     }
   }
 };
