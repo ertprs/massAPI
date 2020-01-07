@@ -1,0 +1,77 @@
+{
+  "_args": [
+    [
+      "strapi-plugin-email@3.0.0-beta.16.5",
+      "/home/ubuntu/massAPI"
+    ]
+  ],
+  "_from": "strapi-plugin-email@3.0.0-beta.16.5",
+  "_id": "strapi-plugin-email@3.0.0-beta.16.5",
+  "_inBundle": false,
+  "_integrity": "sha512-Dn4YfblLMubOuBHNE7swBaj/cNbj9xQgwlU7SeSiyMQavUMp50Vx5H5ewBn9jaUqRfPuxJiJHPghGIn/iDZ8mw==",
+  "_location": "/strapi-plugin-email",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "strapi-plugin-email@3.0.0-beta.16.5",
+    "name": "strapi-plugin-email",
+    "escapedName": "strapi-plugin-email",
+    "rawSpec": "3.0.0-beta.16.5",
+    "saveSpec": null,
+    "fetchSpec": "3.0.0-beta.16.5"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/strapi-plugin-email/-/strapi-plugin-email-3.0.0-beta.16.5.tgz",
+  "_spec": "3.0.0-beta.16.5",
+  "_where": "/home/ubuntu/massAPI",
+  "author": {
+    "name": "Strapi team",
+    "email": "hi@strapi.io",
+    "url": "http://strapi.io"
+  },
+  "bugs": {
+    "url": "https://github.com/strapi/strapi/issues"
+  },
+  "dependencies": {
+    "strapi-provider-email-sendmail": "3.0.0-beta.16.5",
+    "strapi-utils": "3.0.0-beta.16.5"
+  },
+  "description": "This is the description of the plugin.",
+  "devDependencies": {
+    "react-copy-to-clipboard": "5.0.1",
+    "rimraf": "^2.6.3",
+    "strapi-helper-plugin": "3.0.0-beta.16.5"
+  },
+  "engines": {
+    "node": ">=10.0.0",
+    "npm": ">=6.0.0"
+  },
+  "gitHead": "84adbf3bcf4bdb907fb2ad3816b8994515553d1a",
+  "homepage": "https://github.com/strapi/strapi#readme",
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "Strapi team",
+      "email": "hi@strapi.io",
+      "url": "http://strapi.io"
+    }
+  ],
+  "name": "strapi-plugin-email",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/strapi/strapi.git"
+  },
+  "scripts": {
+    "test": "echo \"no tests yet\""
+  },
+  "strapi": {
+    "name": "Email",
+    "icon": "paper-plane",
+    "description": "email.plugin.description",
+    "required": true
+  },
+  "version": "3.0.0-beta.16.5"
+}

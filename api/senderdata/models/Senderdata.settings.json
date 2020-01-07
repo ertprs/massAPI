@@ -22,6 +22,12 @@
     },
     "Type": {
       "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "userid": {
+      "type": "integer"
     }
   }
 }
