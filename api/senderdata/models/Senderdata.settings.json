@@ -26,8 +26,9 @@
     "phone": {
       "type": "string"
     },
-    "userid": {
-      "type": "integer"
+    "user": {
+      "model": "user",
+      "plugin": "users-permissions"
     }
   }
 }
