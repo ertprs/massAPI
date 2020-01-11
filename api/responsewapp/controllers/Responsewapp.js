@@ -21,11 +21,13 @@ module.exports = {
     if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
       let event = ctx.request.body.messages[0];
       if (event.type === "chat" && event.body && !event.fromMe) {
-        console.log("--------------- body --------------");
-        console.log(ctx.request.body);
-        console.log(ctx.response);
-        console.log(ctx.request.body.instanceId);
-        let sender = await strapi.services.senderdata.findOne({ type: "ChatAPI", apitoken: ctx.request.body.instanceId });
+        let knexQueryBuilder = strapi.connections.default;
+        let query = "Select * from senderdata where type='ChatAPI' and apitoken LIKE '%instance" + ctx.request.body.instanceId + "'";
+        let senders = await knexQueryBuilder.raw(query);
+        let sender = {};
+        if(senders[0]) {
+          sender = senders[0];
+        }
         console.log("---------------- sender ------------------");
         console.log(sender);
         console.log("---------------- sender end --------------");
