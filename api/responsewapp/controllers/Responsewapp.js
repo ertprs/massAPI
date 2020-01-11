@@ -23,6 +23,7 @@ module.exports = {
       if (event.type === "chat" && event.body && !event.fromMe) {
         console.log("--------------- body --------------");
         console.log(ctx.request.body);
+        console.log(ctx.response);
         console.log(ctx.request.body.instanceId);
         let sender = await strapi.services.senderdata.findOne({ type: "ChatAPI", apitoken: ctx.request.body.instanceId });
         console.log("---------------- sender ------------------");
