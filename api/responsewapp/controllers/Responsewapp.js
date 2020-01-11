@@ -24,11 +24,10 @@ module.exports = {
         let knexQueryBuilder = strapi.connections.default;
         let query = "Select * from senderdata where type='ChatAPI' and name LIKE '%instance" + ctx.request.body.instanceId + "%'";
         let senders = await knexQueryBuilder.raw(query);
-        let sender = {};
         if(senders[0]) {
           const finded = await findMessage(event.body, senders[0]);
           if (finded) {
-            sendChatAPIMsg(event, finded, sender);
+            sendChatAPIMsg(event, finded, sender[0]);
           }
         }
       }
