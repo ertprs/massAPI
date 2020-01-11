@@ -23,7 +23,9 @@ module.exports = {
       if (event.type === "chat" && event.body && !event.fromMe) {
         let knexQueryBuilder = strapi.connections.default;
         let query = "Select * from senderdata where type='ChatAPI' and apitoken LIKE '%instance" + ctx.request.body.instanceId + "'";
+        console.log(query);
         let senders = await knexQueryBuilder.raw(query);
+        console.log(senders);
         let sender = {};
         if(senders[0]) {
           sender = senders[0];
