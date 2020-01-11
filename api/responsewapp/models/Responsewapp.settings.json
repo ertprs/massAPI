@@ -26,8 +26,11 @@
     "response": {
       "type": "text"
     },
-    "Blocked": {
+    "blocked": {
       "type": "boolean"
+    },
+    "senderdata": {
+      "model": "senderdata"
     }
   }
 }

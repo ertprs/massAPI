@@ -20,7 +20,7 @@
     "apitoken": {
       "type": "string"
     },
-    "Type": {
+    "type": {
       "type": "string"
     },
     "phone": {
