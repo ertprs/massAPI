@@ -24,7 +24,8 @@ module.exports = {
       let event = ctx.request.body.messages[0];
       if (event.type === "chat" && event.body && !event.fromMe) {
         console.log('hook chat api');
-        console.log(ctx.request.body);
+        console.log(ctx.request);
+        console.log('--------------------------');
         const finded = await findMessage(event.body);
         console.log(finded);
         if (finded) {
