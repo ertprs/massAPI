@@ -26,7 +26,9 @@ module.exports = {
         let senders = await knexQueryBuilder.raw(query);
         if(senders[0]) {
           const sender = JSON.stringify(senders[0]);
+          console.log('-------sender start--------');
           console.log(sender);
+          console.log('-------sender end--------');
           const finded = await findMessage(event.body, sender);
           if (finded) {
             sendChatAPIMsg(event, finded, sender);
