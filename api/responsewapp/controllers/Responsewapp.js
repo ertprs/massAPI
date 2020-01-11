@@ -8,12 +8,10 @@ module.exports = {
   hookMercuryApi: async ctx => {
     let event = ctx.request.body;
     if (event.type === "message" && event.data.body && !event.data.fromMe) {
-      console.log('hook mercury api');
-      const finded = await findMessage(event.data.body);
-      console.log(finded);
-      if (finded) {
-        sendMercuryMsg(event, finded)
-      }
+      // const finded = await findMessage(event.data.body, "", "MercuryAPI");
+      // if (finded) {
+      //   sendMercuryMsg(event, finded)
+      // }
     }
   },
   setApiToken: () => {
@@ -23,13 +21,15 @@ module.exports = {
     if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
       let event = ctx.request.body.messages[0];
       if (event.type === "chat" && event.body && !event.fromMe) {
-        console.log('hook chat api');
-        console.log(ctx.request.body);
-        console.log('--------------------------');
-        const finded = await findMessage(event.body);
-        console.log(finded);
-        if (finded) {
-          sendChatAPIMsg(event, finded)
+        let sender = await strapi.services.senderdata.findOne({ type: "ChatAPI", apitoken: ctx.request.body.instanceId });
+        console.log("---------------- sender ------------------");
+        console.log(sender);
+        console.log("---------------- sender end --------------");
+        if (sender) {
+          const finded = await findMessage(event.body, sender);
+          if (finded) {
+            sendChatAPIMsg(event, finded, sender);
+          }
         }
       }
     }
@@ -62,25 +62,25 @@ module.exports = {
   }
 };
 
-async function findMessage(message) {
-  let knexQueryBuilder = strapi.connections.default;
-  let v_messages = await knexQueryBuilder.raw(
-    "SELECT * FROM responsewapps where blocked=false order by 'order' asc;"
-  );
-  if (v_messages[0]) {
-    const asterik = v_messages[0].find(obj => obj.message === '*');
+async function findMessage(message, senderData) {
+  let asterik = await strapi.services.responsewapps.findOne({ message: '*' });
+  let responses = await strapi.services.responsewapps.findAll({ senderdata: senderData.id });
+  if (responses) {
     let asterik_order = 99999;
     if (asterik) {
       asterik_order = asterik.order;
     }
-    const finded = v_messages[0].find(obj => obj.message.toUpperCase() === message.toUpperCase() && obj.order < asterik_order);
+    const finded = responses.find(obj => obj.message.toUpperCase() === message.toUpperCase() && obj.order < asterik_order);
     if (finded) {
       return finded;
     } else {
       return asterik;
     }
+  } else {
+    return asterik;
   }
 }
+
 
 
 async function sendMercuryMsg(event, obj) {
@@ -113,14 +113,11 @@ async function sendMercuryMsg(event, obj) {
   }
 }
 
-async function sendChatAPIMsg(event, obj) {
+async function sendChatAPIMsg(event, obj, sender) {
   var request = require("request");
-  console.log('here');
-  let senderData = await strapi.services.senderdata.findOne({ type: 'ChatAPI' });
-  console.log(senderData.name + '/sendMessage?token=' + senderData.apitoken);
   var options = {
     method: "POST",
-    url: senderData.name + '/sendMessage?token=' + senderData.apitoken,
+    url: sender.name + '/sendMessage?token=' + sender.apitoken,
     body: { body: obj.response, phone: event.author.split("@")[0] },
     json: true
   };
