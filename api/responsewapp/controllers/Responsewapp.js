@@ -25,9 +25,10 @@ module.exports = {
         let query = "Select * from senderdata where type='ChatAPI' and name LIKE '%instance" + ctx.request.body.instanceId + "%'";
         let senders = await knexQueryBuilder.raw(query);
         if(senders[0]) {
-          const finded = await findMessage(event.body, senders[0]);
+          const sender = JSON.stringify(senders[0]);
+          const finded = await findMessage(event.body, sender);
           if (finded) {
-            sendChatAPIMsg(event, finded, senders[0]);
+            sendChatAPIMsg(event, finded, sender);
           }
         }
       }
