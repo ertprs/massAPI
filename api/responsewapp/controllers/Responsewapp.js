@@ -27,7 +27,6 @@ module.exports = {
         if(senders[0]) {
           const finded = await findMessage(event.body, senders[0]);
           if (finded) {
-            console.log(senders[0]);
             sendChatAPIMsg(event, finded, senders[0]);
           }
         }
@@ -114,6 +113,9 @@ async function sendMercuryMsg(event, obj) {
 }
 
 async function sendChatAPIMsg(event, obj, sender) {
+  console.log('-------------send chat-----------');
+  console.log(sender);
+  console.log('-------------send chat-----------');
   var request = require("request");
   var options = {
     method: "POST",
