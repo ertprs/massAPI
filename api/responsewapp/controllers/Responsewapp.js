@@ -63,8 +63,8 @@ module.exports = {
 };
 
 async function findMessage(message, senderData) {
-  let asterik = await strapi.services.responsewapps.findOne({ message: '*' });
-  let responses = await strapi.services.responsewapps.find({ senderdata: senderData.id });
+  let asterik = await strapi.services.responsewapp.findOne({ message: '*' });
+  let responses = await strapi.services.responsewapp.find({ senderdata: senderData.id });
   if (responses) {
     let asterik_order = 99999;
     if (asterik) {
