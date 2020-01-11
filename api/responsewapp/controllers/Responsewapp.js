@@ -113,8 +113,7 @@ async function sendMercuryMsg(event, obj) {
 }
 
 async function sendChatAPIMsg(event, obj, sender) {
-  console.log(sender.name);
-  console.log(sender.apitoken);
+  console.log(sender);
   var request = require("request");
   var options = {
     method: "POST",
