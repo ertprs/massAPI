@@ -27,7 +27,7 @@ module.exports = {
         if(senders[0]) {
           const finded = await findMessage(event.body, senders[0]);
           if (finded) {
-            sendChatAPIMsg(event, finded, sender[0]);
+            sendChatAPIMsg(event, finded, senders[0]);
           }
         }
       }
