@@ -23,18 +23,10 @@ module.exports = {
       if (event.type === "chat" && event.body && !event.fromMe) {
         let knexQueryBuilder = strapi.connections.default;
         let query = "Select * from senderdata where type='ChatAPI' and name LIKE '%instance" + ctx.request.body.instanceId + "%'";
-        console.log(query);
         let senders = await knexQueryBuilder.raw(query);
-        console.log(senders);
         let sender = {};
         if(senders[0]) {
-          sender = senders[0];
-        }
-        console.log("---------------- sender ------------------");
-        console.log(sender);
-        console.log("---------------- sender end --------------");
-        if (sender) {
-          const finded = await findMessage(event.body, sender);
+          const finded = await findMessage(event.body, senders[0]);
           if (finded) {
             sendChatAPIMsg(event, finded, sender);
           }
@@ -72,7 +64,7 @@ module.exports = {
 
 async function findMessage(message, senderData) {
   let asterik = await strapi.services.responsewapps.findOne({ message: '*' });
-  let responses = await strapi.services.responsewapps.findAll({ senderdata: senderData.id });
+  let responses = await strapi.services.responsewapps.find({ senderdata: senderData.id });
   if (responses) {
     let asterik_order = 99999;
     if (asterik) {
