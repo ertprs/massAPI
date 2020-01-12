@@ -126,19 +126,19 @@ async function sendChatAPIMsg(event, obj, sender) {
 
 async function sendWrapperAPIMsg(event, obj, sender) {
   var request = require("request");
-  console.log(sender.name + "/sendmessage");
-  console.log(sender.apitoken);
-  console.log(obj.response);
-  console.log(event.author.split("@")[0]);
-  // var options = {
-  //   method: "POST",
-  //   url: sender.name + "/sendmessage",
-  //   body: { token: sender.apitoken, message: obj.response, phone: event.author.split("@")[0] },
-  //   json: true
-  // };
+  // console.log(sender.name + "/sendmessage");
+  // console.log(sender.apitoken);
+  // console.log(obj.response);
+  // console.log(event.author.split("@")[0]);
+  var options = {
+    method: "POST",
+    url: sender.name + "/sendmessage/",
+    body: { token: sender.apitoken, message: obj.response, phone: event.author.split("@")[0] },
+    json: true
+  };
 
-  // request(options, function (error, response, body) {
-  //   if (error) throw new Error(error);
-  //   console.log(body);
-  // });
+  request(options, function (error, response, body) {
+    if (error) throw new Error(error);
+    console.log(body);
+  });
 }
