@@ -37,7 +37,6 @@ module.exports = {
   },
 
   hookWrapperApi: async ctx => {
-    console.log('hook wrapper api');
     try {
       if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
         let event = ctx.request.body.messages[0];
@@ -126,10 +125,6 @@ async function sendChatAPIMsg(event, obj, sender) {
 
 async function sendWrapperAPIMsg(event, obj, sender) {
   var request = require("request");
-  // console.log(sender.name + "/sendmessage");
-  // console.log(sender.apitoken);
-  // console.log(obj.response);
-  // console.log(event.author.split("@")[0]);
   var options = {
     method: "POST",
     url: sender.name + "/sendmessage/",
