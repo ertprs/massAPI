@@ -126,9 +126,13 @@ async function sendChatAPIMsg(event, obj, sender) {
 
 async function sendWrapperAPIMsg(event, obj, sender) {
   var request = require("request");
+  console.log(sender.name + "/sendmessage");
+  console.log(sender.apitoken);
+  console.log(obj.response);
+  console.log(event.author.split("@")[0]);
   var options = {
     method: "POST",
-    url: sender.name + "/sendMessage",
+    url: sender.name + "/sendmessage",
     body: { token: sender.apitoken, message: obj.response, phone: event.author.split("@")[0] },
     json: true
   };
