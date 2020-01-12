@@ -44,6 +44,7 @@ module.exports = {
         if (event.type === "chat" && event.body && !event.fromMe) {
           // get sender
           let query = "Select * from senderdata where type='WrapperAPI'";
+          let knexQueryBuilder = strapi.connections.default;
           let senders = await knexQueryBuilder.raw(query);
           console.log(senders);
           if (senders[0]) {
