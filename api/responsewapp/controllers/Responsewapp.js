@@ -39,16 +39,20 @@ module.exports = {
   hookWrapperApi: async ctx => {
     console.log('hook wrapper api');
     try {
-      console.log(ctx.request.body);
       if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
         let event = ctx.request.body.messages[0];
-        console.log(ctx.request.body);
         if (event.type === "chat" && event.body && !event.fromMe) {
           // get sender
+          let query = "Select * from senderdata where type='WrapperAPI'";
+          let senders = await knexQueryBuilder.raw(query);
 
-          const finded = await findMessage(event.body);
-          if (finded) {
-            sendWrapperAPIMsg(event, finded)
+          if (senders[0]) {
+            const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
+            console.log(sender);
+            const finded = await findMessage(event.body, sender);
+            if (finded) {
+              sendWrapperAPIMsg(event, finded)
+            }
           }
         }
       }
