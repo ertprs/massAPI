@@ -48,13 +48,9 @@ module.exports = {
           let senders = await knexQueryBuilder.raw(query);
           if (senders[0]) {
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-            console.log(sender);
             const finded = await findMessage(event.body, sender);
-            console.log('------------finded--------------');
-            console.log(finded);
-            console.log('---------------------------------');
             if (finded) {
-              sendWrapperAPIMsg(event, finded)
+              sendWrapperAPIMsg(event, finded, sender)
             }
           }
         }
