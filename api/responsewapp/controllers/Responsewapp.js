@@ -17,6 +17,7 @@ module.exports = {
   setApiToken: () => {
 
   },
+
   hookChatApi: async ctx => {
     if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
       let event = ctx.request.body.messages[0];
@@ -24,11 +25,8 @@ module.exports = {
         let knexQueryBuilder = strapi.connections.default;
         let query = "Select * from senderdata where type='ChatAPI' and name LIKE '%instance" + ctx.request.body.instanceId + "%'";
         let senders = await knexQueryBuilder.raw(query);
-        if(senders[0]) {
+        if (senders[0]) {
           const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-          console.log('------------------');
-          console.log(sender);
-          console.log('------------------');
           const finded = await findMessage(event.body, sender);
           if (finded) {
             sendChatAPIMsg(event, finded, sender);
@@ -40,27 +38,20 @@ module.exports = {
 
   hookWrapperApi: async ctx => {
     console.log('hook wrapper api');
-    console.log('---------------------------');
-    console.log(ctx);
-    console.log('---------------------------');
     try {
       console.log(ctx.request.body);
       if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
         let event = ctx.request.body.messages[0];
         if (event.type === "chat" && event.body && !event.fromMe) {
-          console.log('hook wrapper api');
+          // get sender
+
           const finded = await findMessage(event.body);
-          console.log(finded);
           if (finded) {
-            sendChatAPIMsg(event, finded)
+            sendWrapperAPIMsg(event, finded)
           }
         }
       }
     } catch (e) {
-      console.log('hook api error');
-      console.log('---------------------------');
-      console.log(e);
-      console.log('---------------------------');
     }
   }
 };
@@ -84,9 +75,7 @@ async function findMessage(message, senderData) {
   }
 }
 
-
-
-async function sendMercuryMsg(event, obj) {
+async function sendMercuryMsg(event, obj, sender) {
   var request = require("request");
   //let user = await strapi.services.senderdata.findOne({ type:  });
   let senderData = await strapi.services.senderdata.findOne({ type: 'Mercury' });
@@ -117,7 +106,6 @@ async function sendMercuryMsg(event, obj) {
 }
 
 async function sendChatAPIMsg(event, obj, sender) {
-  console.log(sender);
   var request = require("request");
   var options = {
     method: "POST",
@@ -132,6 +120,17 @@ async function sendChatAPIMsg(event, obj, sender) {
   });
 }
 
-async function sendWrapperAPIMsg(event, obj) {
+async function sendWrapperAPIMsg(event, obj, sender) {
+  var request = require("request");
+  var options = {
+    method: "POST",
+    url: sender.name + "/sendMessage",
+    body: { token: sender.apitoken, message: obj.response, phone: event.author.split("@")[0] },
+    json: true
+  };
 
+  request.options, function (error, response, body) {
+    if (error) throw new Error(error);
+    console.log(body);
+  }
 }
