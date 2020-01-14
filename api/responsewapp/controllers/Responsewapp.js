@@ -8,10 +8,17 @@ module.exports = {
   hookMercuryApi: async ctx => {
     let event = ctx.request.body;
     if (event.type === "message" && event.data.body && !event.data.fromMe) {
-      // const finded = await findMessage(event.data.body, "", "MercuryAPI");
-      // if (finded) {
-      //   sendMercuryMsg(event, finded)
-      // }
+      // find sender
+      let query = "Select * from senderdata where type='WrapperAPI'";
+      let knexQueryBuilder = strapi.connections.default;
+      let senders = await knexQueryBuilder.raw(query);
+      if (senders[0]) {
+        const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
+        const finded = await findMessage(event.body, sender);
+        if (finded) {
+          sendMercuryMsg(event, finded, sender)
+        }
+      }
     }
   },
   setApiToken: () => {
@@ -40,6 +47,8 @@ module.exports = {
     try {
       if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
         let event = ctx.request.body.messages[0];
+        console.log(ctx.request.body);
+        console.log(ctx.request.body.message);
         if (event.type === "chat" && event.body && !event.fromMe) {
           // get sender
           let query = "Select * from senderdata where type='WrapperAPI'";
@@ -81,31 +90,27 @@ async function findMessage(message, senderData) {
 async function sendMercuryMsg(event, obj, sender) {
   var request = require("request");
   //let user = await strapi.services.senderdata.findOne({ type:  });
-  let senderData = await strapi.services.senderdata.findOne({ type: 'Mercury' });
-  if (senderData) {
-    var options = {
-      method: "POST",
-      url: "https://api.mercury.chat/sdk/whatsapp/sendMessage",
-      qs: {
-        api_token: senderData.apitoken,
-        instance: event.data.instance_number
-      },
-      headers: {
-        "cache-control": "no-cache",
-        Connection: "keep-alive",
-        Accept: "*/*",
-        "User-Agent": "PostmanRuntime/7.20.1",
-        "Content-Type": "application/json"
-      },
-      body: { body: obj.response, phone: event.data.author.split("@")[0] },
-      json: true
-    };
-    request(options, function (error, response, body) {
-      if (error) {
-        console.log('error');
-      }
-    });
-  }
+  var options = {
+    method: "POST",
+    url: "https://api.mercury.chat/sdk/whatsapp/sendMessage",
+    qs: {
+      api_token: senderData.apitoken,
+      instance: event.data.instance_number
+    },
+    headers: {
+      "cache-control": "no-cache",
+      Connection: "keep-alive",
+      Accept: "*/*",
+      "Content-Type": "application/json"
+    },
+    body: { body: obj.response, phone: event.data.author.split("@")[0] },
+    json: true
+  };
+  request(options, function (error, response, body) {
+    if (error) {
+      console.log('error');
+    }
+  });
 }
 
 async function sendChatAPIMsg(event, obj, sender) {
