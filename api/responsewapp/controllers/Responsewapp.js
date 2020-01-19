@@ -50,7 +50,6 @@ module.exports = {
         if (event.type === "chat" && event.body && !event.fromMe) {
           // get sender
           const to = event.to.split("@")[0];
-          console.log(to);
           let query = "Select * from senderdata where type='WrapperAPI' and phone='+" + to + "'";
           let knexQueryBuilder = strapi.connections.default;
           let senders = await knexQueryBuilder.raw(query);
@@ -65,6 +64,30 @@ module.exports = {
       }
     } catch (e) {
     }
+  },
+
+  hookWhatsOfficialApi: async ctx => {
+    try {
+
+    } catch (e) {
+
+    }
+  },
+
+  hookTelegramApi: async ctx => {
+    console.log(ctx.request.body);
+
+    // let event = ctx.request.body.messages[0];
+    // let knexQueryBuilder = strapi.connections.default;
+    // let query = "Select * from senderdata where type='TelegramAPI' and name LIKE '%instance" + ctx.request.body.instanceId + "%'";
+    // let senders = await knexQueryBuilder.raw(query);
+    // if(senders[0]) {
+    //   const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
+    //   const finded = await findMessage("", sender);
+    //   if(finded) {
+    //     sendTelegramAPIMsg(event)
+    //   }
+    // }
   }
 };
 
@@ -141,4 +164,12 @@ async function sendWrapperAPIMsg(event, obj, sender) {
     if (error) throw new Error(error);
     console.log(body);
   });
+}
+
+async function sendWhatsOfficialAPIMsg(event, obj, sender) {
+
+}
+
+async function sendTelegramAPIMsg(event, obj, sender) {
+
 }

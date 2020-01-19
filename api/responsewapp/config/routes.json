@@ -65,6 +65,16 @@
     },
     {
       "method": "POST",
+      "path": "/hookWhatsOfficialApi",
+      "handler": "Responsewapp.hookWhatsOfficialApi"
+    },
+    {
+      "method": "POST",
+      "path": "/hookTelegramApi",
+      "handler": "Responsewapp.hookTelegramApi"
+    },
+    {
+      "method": "POST",
       "path": "/wappapitoken",
       "handler": "Responsewapp.setApiToken"
     }
