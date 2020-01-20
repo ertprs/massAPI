@@ -76,27 +76,27 @@ module.exports = {
 
   hookTelegramApi: async ctx => {
     console.log(ctx.request.body);
-    console.log('telegram');
-    // if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
-    //   let event = ctx.request.body.messages[0];
-    //   console.log(event);
-    //   if (event.type === 'chat' && event.body) {
-    //     console.log(event);
-    //     let knexQueryBuilder = strapi.connections.default;
-    //     let query = "Select * from senderdata where type='TelegramAPI'";
-    //     let senders = await knexQueryBuilder.raw(query);
+    // console.log('telegram');
+    if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
+      let event = ctx.request.body.messages[0];
+      console.log(event);
+      if (event.type === 'chat' && event.body) {
+        console.log(event);
+        let knexQueryBuilder = strapi.connections.default;
+        let query = "Select * from senderdata where type='TelegramAPI'";
+        let senders = await knexQueryBuilder.raw(query);
 
-    //     if(senders[0]) {
-    //       const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-    //       console.log(sender);
-    //       const finded = await findMessage(event.body, sender);
-    //       console.log(finded);
-    //       if (finded) {
-    //         sendTelegramAPIMsg(event, finded, sender);
-    //       }
-    //     }
-    //   }
-    // }
+        if(senders[0]) {
+          const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
+          console.log(sender);
+          const finded = await findMessage(event.body, sender);
+          console.log(finded);
+          if (finded) {
+            sendTelegramAPIMsg(event, finded, sender);
+          }
+        }
+      }
+    }
   }
 };
 
@@ -192,7 +192,7 @@ async function sendTelegramAPIMsg(event, obj, sender) {
     }
   };
   request(options, function(error, response, body) {
-    if(error) throw new Error9(error);
+    if(error) throw new Error(error);
     console.log(body);
   })
 }
