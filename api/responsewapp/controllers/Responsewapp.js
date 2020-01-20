@@ -75,36 +75,24 @@ module.exports = {
   },
 
   hookTelegramApi: async ctx => {
-    console.log(ctx.request.body);
     if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
       let event = ctx.request.body.messages[0];
-      console.log(event.chat);
-      // if (event.type === 'chat' && event.body && !event.fromMe) {
-      //   let knexQueryBuilder = strapi.connections.default;
-      //   let query = "Select * from senderdata where type='TelegramAPI' and name LIKE '%instance" + ctx.request.body.instanceId + "%'";
-      //   let senders = await knexQueryBuilder.raw(query);
+      if (event.type === 'chat' && event.body && !event.fromMe) {
+        let knexQueryBuilder = strapi.connections.default;
+        let query = "Select * from senderdata where type='TelegramAPI'";
+        let senders = await knexQueryBuilder.raw(query);
 
-      //   if(senders[0]) {
-      //     const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-      //     const finded = await findMessage(event.body, sender);
-      //     if (finded) {
-      //       sendTelegramAPIMsg(event, finded, sender);
-      //     }
-      //   }
-      // }
+        if(senders[0]) {
+          const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
+          console.log(sender);
+          const finded = await findMessage(event.body, sender);
+          console.log(finded);
+          if (finded) {
+            sendTelegramAPIMsg(event, finded, sender);
+          }
+        }
+      }
     }
-
-    // let event = ctx.request.body.messages[0];
-    // let knexQueryBuilder = strapi.connections.default;
-    // let query = "Select * from senderdata where type='TelegramAPI' and name LIKE '%instance" + ctx.request.body.instanceId + "%'";
-    // let senders = await knexQueryBuilder.raw(query);
-    // if(senders[0]) {
-    //   const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-    //   const finded = await findMessage("", sender);
-    //   if(finded) {
-    //     sendTelegramAPIMsg(event)
-    //   }
-    // }
   }
 };
 
@@ -188,5 +176,19 @@ async function sendWhatsOfficialAPIMsg(event, obj, sender) {
 }
 
 async function sendTelegramAPIMsg(event, obj, sender) {
-
+  var request = require("request");
+  var options = {
+    method: "POST",
+    url: sender.name + "/send_message",
+    body: {
+      token: sender.apitoken,
+      message: obj.response,
+      receiver: event.chat.phone,
+      sender: sender.phone
+    }
+  };
+  request(options, function(error, response, body) {
+    if(error) throw new Error9(error);
+    console.log(body);
+  })
 }
