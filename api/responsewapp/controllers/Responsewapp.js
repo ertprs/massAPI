@@ -191,6 +191,7 @@ async function sendTelegramAPIMsg(event, obj, sender) {
       sender: sender.phone
     }
   };
+  console.log(options);
   request(options, function(error, response, body) {
     if(error) throw new Error(error);
     console.log(body);
