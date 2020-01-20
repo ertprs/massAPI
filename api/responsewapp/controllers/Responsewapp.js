@@ -77,7 +77,8 @@ module.exports = {
   hookTelegramApi: async ctx => {
     if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
       let event = ctx.request.body.messages[0];
-      if (event.type === 'chat' && event.body && !event.fromMe) {
+      console.log(event);
+      if (event.type === 'chat' && event.body) {
         console.log(event);
         let knexQueryBuilder = strapi.connections.default;
         let query = "Select * from senderdata where type='TelegramAPI'";
