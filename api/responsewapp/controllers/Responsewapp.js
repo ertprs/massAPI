@@ -68,7 +68,9 @@ module.exports = {
 
   hookWhatsOfficialApi: async ctx => {
     try {
-
+      console.log('Official hook');
+      console.log(ctx.request);
+      
     } catch (e) {
 
     }
