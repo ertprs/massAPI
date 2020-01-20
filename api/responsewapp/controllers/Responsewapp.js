@@ -86,7 +86,7 @@ module.exports = {
         let query = "Select * from senderdata where type='TelegramAPI'";
         let senders = await knexQueryBuilder.raw(query);
 
-        if(senders[0]) {
+        if (senders[0]) {
           const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
           console.log(sender);
           const finded = await findMessage(event.body, sender);
@@ -185,15 +185,15 @@ async function sendTelegramAPIMsg(event, obj, sender) {
     method: "POST",
     url: sender.name + "/send_message",
     body: {
-      token: sender.apitoken,
-      message: obj.response,
-      receiver: event.chat.phone,
-      sender: sender.phone
+      "token": sender.apitoken,
+      "sender": sender.phone,
+      "receiver": event.chat.phone,
+      "message": obj.response
     }
   };
   console.log(options);
-  request(options, function(error, response, body) {
-    if(error) throw new Error(error);
+  request(options, function (error, response, body) {
+    if (error) throw new Error(error);
     console.log(body);
   })
 }
