@@ -183,7 +183,7 @@ async function sendTelegramAPIMsg(event, obj, sender) {
   var request = require("request");
   var options = {
     method: "POST",
-    url: sender.name + "/send_message",
+    url: sender.name + "/send_message/",
     body: {
       "token": sender.apitoken,
       "sender": sender.phone,
