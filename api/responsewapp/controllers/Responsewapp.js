@@ -189,7 +189,8 @@ async function sendTelegramAPIMsg(event, obj, sender) {
       "sender": sender.phone,
       "receiver": event.chat.phone,
       "message": obj.response
-    }
+    },
+    json: true
   };
   console.log(options);
   request(options, function (error, response, body) {
