@@ -75,7 +75,7 @@ module.exports = {
   },
 
   hookTelegramApi: async ctx => {
-    // console.log('telegram');
+    console.log('telegram');
     if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
       let event = ctx.request.body.messages[0];
       if (event.type === 'chat' && event.body) {
@@ -180,10 +180,10 @@ async function sendTelegramAPIMsg(event, obj, sender) {
     method: "POST",
     url: sender.name + "/send_message/",
     body: {
-      "token": sender.apitoken,
-      "sender": sender.phone,
-      "receiver": event.chat.phone,
-      "message": obj.response
+      token: sender.apitoken,
+      sender: sender.phone,
+      receiver: event.chat.phone,
+      message: obj.response
     },
     json: true
   };
