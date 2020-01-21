@@ -68,16 +68,18 @@ module.exports = {
 
   hookWhatsOfficialApi: async ctx => {
     try {
-      console.log(ctx);
+      console.log('official');
+      console.log(ctx.request);
+      console.log(ctx.request.body);
     } catch (e) {
 
     }
   },
 
   hookTelegramApi: async ctx => {
-    console.log('telegram');
-    console.log(ctx.request);
-    console.log(ctx.request.body);
+    // console.log('telegram');
+    // console.log(ctx.request);
+    // console.log(ctx.request.body);
     // if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
     //   let event = ctx.request.body.messages[0];
     //   if (event.type === 'chat' && event.body) {
