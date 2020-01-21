@@ -29,6 +29,9 @@
     "user": {
       "model": "user",
       "plugin": "users-permissions"
+    },
+    "endpoints": {
+      "type": "string"
     }
   }
 }
