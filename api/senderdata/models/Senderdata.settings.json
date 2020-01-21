@@ -30,7 +30,7 @@
       "model": "user",
       "plugin": "users-permissions"
     },
-    "endpoints": {
+    "endpoint": {
       "type": "string"
     }
   }
