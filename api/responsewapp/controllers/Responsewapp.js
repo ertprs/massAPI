@@ -78,7 +78,7 @@ module.exports = {
         const event = ctx.request.body;
         if (event.type === 1 && event['message-in']) {
           let knexQueryBuilder = strapi.connections.default;
-          let query = "Select * from senderdata where type='WhatsOfficialApi' and phone='" + event.number + "'";
+          let query = "Select * from senderdata where type='WhatsOfficialApi' and phone='" + event.owner + "'";
           let senders = await knexQueryBuilder.raw(query);
           if (senders[0]) {
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
