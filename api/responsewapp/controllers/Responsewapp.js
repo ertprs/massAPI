@@ -201,7 +201,8 @@ async function sendWhatsOfficialAPIMsg(event, obj, sender) {
           message: obj.response
         }
       ]
-    }
+    },
+    json: true
   };
   console.log(options);
   request(options, function(error, response, body) {
