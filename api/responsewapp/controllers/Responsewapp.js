@@ -50,7 +50,7 @@ module.exports = {
         if (event.type === "chat" && event.body && !event.fromMe) {
           // get sender
           const to = event.to.split("@")[0];
-          let query = "Select * from senderdata where type='WrapperAPI' and phone='+" + to + "'";
+          let query = "Select * from senderdata where type='WrapperAPI' and phone='" + to + "'";
           let knexQueryBuilder = strapi.connections.default;
           let senders = await knexQueryBuilder.raw(query);
           if (senders[0]) {
