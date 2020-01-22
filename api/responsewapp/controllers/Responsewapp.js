@@ -6,12 +6,12 @@
 
 module.exports = {
   hookMercuryApi: async ctx => {
-    let event = ctx.request.body;
+    const event = ctx.request.body;
     if (event.type === "message" && event.data.body && !event.data.fromMe) {
       // find sender
-      let query = "Select * from senderdata where type='WrapperAPI'";
-      let knexQueryBuilder = strapi.connections.default;
-      let senders = await knexQueryBuilder.raw(query);
+      const query = "Select * from senderdata where type='WrapperAPI'";
+      const knexQueryBuilder = strapi.connections.default;
+      const senders = await knexQueryBuilder.raw(query);
       if (senders[0]) {
         const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
         const finded = await findMessage(event.body, sender);
@@ -27,11 +27,11 @@ module.exports = {
 
   hookChatApi: async ctx => {
     if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
-      let event = ctx.request.body.messages[0];
+      const event = ctx.request.body.messages[0];
       if (event.type === "chat" && event.body && !event.fromMe) {
-        let knexQueryBuilder = strapi.connections.default;
-        let query = "Select * from senderdata where type='ChatAPI' and name LIKE '%instance" + ctx.request.body.instanceId + "%'";
-        let senders = await knexQueryBuilder.raw(query);
+        const knexQueryBuilder = strapi.connections.default;
+        const query = "Select * from senderdata where type='ChatAPI' and name LIKE '%instance" + ctx.request.body.instanceId + "%'";
+        const senders = await knexQueryBuilder.raw(query);
         if (senders[0]) {
           const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
           const finded = await findMessage(event.body, sender);
@@ -47,15 +47,15 @@ module.exports = {
     try {
       console.log("wrapper api");
       if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
-        let event = ctx.request.body.messages[0];
+        const event = ctx.request.body.messages[0];
         console.log(event);
 
         if (event.type === "chat" && event.body && !event.fromMe) {
           // get sender
           const to = event.to.split("@")[0];
-          let query = "Select * from senderdata where type='WrapperAPI' and phone='" + to + "'";
-          let knexQueryBuilder = strapi.connections.default;
-          let senders = await knexQueryBuilder.raw(query);
+          const query = "Select * from senderdata where type='WrapperAPI' and phone='" + to + "'";
+          const knexQueryBuilder = strapi.connections.default;
+          const senders = await knexQueryBuilder.raw(query);
           if (senders[0]) {
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
             const finded = await findMessage(event.body, sender);
@@ -71,20 +71,17 @@ module.exports = {
 
   hookWhatsOfficialApi: async ctx => {
     try {
-      console.log('official');
-      console.log(ctx.request.body);
-      console.log(ctx.request.body['message-in']);
       if (ctx.request.body) {
         const event = ctx.request.body;
         if (event.type === 1 && event['message-in']) {
-          let knexQueryBuilder = strapi.connections.default;
-          let query = "Select * from senderdata where type='WhatsOfficialApi' and phone='" + event.owner + "'";
-          let senders = await knexQueryBuilder.raw(query);
+          const knexQueryBuilder = strapi.connections.default;
+          const query = "Select * from senderdata where type='WhatsOfficialApi' and phone='" + event.owner + "'";
+          const senders = await knexQueryBuilder.raw(query);
           if (senders[0]) {
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
             const finded = await findMessage(event['message-in'], sender);
             if(finded) {
-              console.log(finded);
+              sendWhatsOfficialAPIMsg(event,finded, sender);
             }
           }
         }
@@ -96,11 +93,11 @@ module.exports = {
 
   hookTelegramApi: async ctx => {
     if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
-      let event = ctx.request.body.messages[0];
+      const event = ctx.request.body.messages[0];
       if (event.type === 'chat' && event.body && !event.fromMe) {
-        let knexQueryBuilder = strapi.connections.default;
-        let query = "Select * from senderdata where type='TelegramAPI' and phone='" + event.to.phone + "'";
-        let senders = await knexQueryBuilder.raw(query);
+        const knexQueryBuilder = strapi.connections.default;
+        const query = "Select * from senderdata where type='TelegramAPI' and phone='" + event.to.phone + "'";
+        const senders = await knexQueryBuilder.raw(query);
 
         if (senders[0]) {
           const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
@@ -115,8 +112,8 @@ module.exports = {
 };
 
 async function findMessage(message, senderData) {
-  let asterik = await strapi.services.responsewapp.findOne({ message: '*' });
-  let responses = await strapi.services.responsewapp.find({ senderdata: senderData.id });
+  const asterik = await strapi.services.responsewapp.findOne({ message: '*' });
+  const responses = await strapi.services.responsewapp.find({ senderdata: senderData.id });
   if (responses) {
     let asterik_order = 99999;
     if (asterik) {
@@ -190,7 +187,25 @@ async function sendWrapperAPIMsg(event, obj, sender) {
 }
 
 async function sendWhatsOfficialAPIMsg(event, obj, sender) {
-
+  var request = require("request");
+  var options = {
+    method: "POST",
+    url: sender.endpoint,
+    body: {
+      token: sender.apitoken,
+      application: 8,
+      globalmessage: obj.response,
+      data: [
+        {
+          number: event.number,
+          message: obj.response
+        }
+      ]
+    }
+  };
+  request(options, function(error, response, body) {
+    if(error) throw new Error(error);
+  });
 }
 
 async function sendTelegramAPIMsg(event, obj, sender) {
