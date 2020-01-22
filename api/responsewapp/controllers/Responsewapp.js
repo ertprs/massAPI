@@ -79,23 +79,20 @@ module.exports = {
   hookTelegramApi: async ctx => {
     if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
       let event = ctx.request.body.messages[0];
-      console.log(event);
-      console.log(ctx.request.body);
-      console.log(ctx.request.body.chat);
-      console.log(ctx.request.body.to);
-      // if (event.type === 'chat' && event.body) {
-      //   let knexQueryBuilder = strapi.connections.default;
-      //   let query = "Select * from senderdata where type='TelegramAPI'";
-      //   let senders = await knexQueryBuilder.raw(query);
+      
+      if (event.type === 'chat' && event.body) {
+        let knexQueryBuilder = strapi.connections.default;
+        let query = "Select * from senderdata where type='TelegramAPI' and phone='" + event.to.phone + "'";
+        let senders = await knexQueryBuilder.raw(query);
 
-      //   if (senders[0]) {
-      //     const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-      //     const finded = await findMessage(event.body, sender);
-      //     if (finded) {
-      //       sendTelegramAPIMsg(event, finded, sender);
-      //     }
-      //   }
-      // }
+        if (senders[0]) {
+          const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
+          const finded = await findMessage(event.body, sender);
+          if (finded) {
+            sendTelegramAPIMsg(event, finded, sender);
+          }
+        }
+      }
     }
   }
 };
