@@ -146,7 +146,7 @@ async function sendChatAPIMsg(event, obj, sender) {
   var request = require("request");
   var options = {
     method: "POST",
-    url: sender.name + '/sendMessage?token=' + sender.apitoken,
+    url: sender.endpoint + '/sendMessage?token=' + sender.apitoken,
     body: { body: obj.response, phone: event.author.split("@")[0] },
     json: true
   };
@@ -161,7 +161,7 @@ async function sendWrapperAPIMsg(event, obj, sender) {
   var request = require("request");
   var options = {
     method: "POST",
-    url: sender.name + "/sendmessage/",
+    url: sender.endpoint + "/sendmessage/",
     body: { token: sender.apitoken, message: obj.response, phone: event.author.split("@")[0] },
     json: true
   };
@@ -180,7 +180,7 @@ async function sendTelegramAPIMsg(event, obj, sender) {
   var request = require("request");
   var options = {
     method: "POST",
-    url: sender.name + "/send_message/",
+    url: sender.endpoint + "/send_message/",
     body: {
       token: sender.apitoken,
       sender: sender.phone,
