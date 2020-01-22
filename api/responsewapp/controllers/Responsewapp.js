@@ -77,6 +77,7 @@ module.exports = {
   },
 
   hookTelegramApi: async ctx => {
+    console.log('telegram');
     if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
       let event = ctx.request.body.messages[0];
       
