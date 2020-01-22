@@ -82,8 +82,7 @@ module.exports = {
     console.log('telegram');
     if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
       let event = ctx.request.body.messages[0];
-      console.log(event);
-      if (event.type === 'chat' && event.body) {
+      if (event.type === 'chat' && event.body && !event.fromMe) {
         let knexQueryBuilder = strapi.connections.default;
         let query = "Select * from senderdata where type='TelegramAPI' and phone='" + event.to.phone + "'";
         let senders = await knexQueryBuilder.raw(query);
