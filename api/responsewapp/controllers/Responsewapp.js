@@ -47,6 +47,7 @@ module.exports = {
     try {
       if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
         let event = ctx.request.body.messages[0];
+        console.log(event);
         if (event.type === "chat" && event.body && !event.fromMe) {
           // get sender
           const to = event.to.split("@")[0];
