@@ -49,7 +49,7 @@ module.exports = {
       if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
         let event = ctx.request.body.messages[0];
         console.log(event);
-        
+
         if (event.type === "chat" && event.body && !event.fromMe) {
           // get sender
           const to = event.to.split("@")[0];
@@ -72,9 +72,23 @@ module.exports = {
   hookWhatsOfficialApi: async ctx => {
     try {
       console.log('official');
-      console.log(ctx);
-      console.log(ctx.request);
       console.log(ctx.request.body);
+      console.log(ctx.request.body['message-in']);
+      if (ctx.request.body) {
+        const event = ctx.request.body;
+        if (event.type === 1 && event['message-in']) {
+          let knexQueryBuilder = strapi.connections.default;
+          let query = "Select * from senderdata where type='WhatsOfficialApi' and phone='" + event.number + "'";
+          let senders = await knexQueryBuilder.raw(query);
+          if (senders[0]) {
+            const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
+            const finded = await findMessage(event['message-in'], sender);
+            if(finded) {
+              console.log(finded);
+            }
+          }
+        }
+      }
     } catch (e) {
 
     }
