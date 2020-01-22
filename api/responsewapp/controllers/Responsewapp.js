@@ -72,6 +72,7 @@ module.exports = {
   hookWhatsOfficialApi: async ctx => {
     try {
       console.log('official');
+      console.log(ctx);
       console.log(ctx.request);
       console.log(ctx.request.body);
     } catch (e) {
