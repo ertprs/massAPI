@@ -45,10 +45,8 @@ module.exports = {
 
   hookWrapperApi: async ctx => {
     try {
-      console.log("wrapper api");
       if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
         const event = ctx.request.body.messages[0];
-        console.log(event);
 
         if (event.type === "chat" && event.body && !event.fromMe) {
           // get sender
@@ -71,10 +69,8 @@ module.exports = {
 
   hookWhatsOfficialApi: async ctx => {
     try {
-      console.log('Wrapper IN');
       if (ctx.request.body) {
         const event = ctx.request.body;
-        console.log('Wrapper body');
         if (event.type === 1 && event['message-in']) {
           const knexQueryBuilder = strapi.connections.default;
           const query = "Select * from senderdata where type='WhatsOfficialApi' and phone='" + event.owner + "'";
@@ -169,7 +165,6 @@ async function sendChatAPIMsg(event, obj, sender) {
 
   request(options, function (error, response, body) {
     if (error) throw new Error(error);
-    console.log(body);
   });
 }
 
@@ -184,7 +179,6 @@ async function sendWrapperAPIMsg(event, obj, sender) {
 
   request(options, function (error, response, body) {
     if (error) throw new Error(error);
-    console.log(body);
   });
 }
 
