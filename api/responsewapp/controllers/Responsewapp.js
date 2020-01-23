@@ -79,6 +79,8 @@ module.exports = {
           const senders = await knexQueryBuilder.raw(query);
           if (senders[0]) {
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
+            console.log(event['message-in']);
+            console.log(sender);
             const finded = await findMessage(event['message-in'], sender);
             if(finded) {
               sendWhatsOfficialAPIMsg(event,finded, sender);
