@@ -71,8 +71,10 @@ module.exports = {
 
   hookWhatsOfficialApi: async ctx => {
     try {
+      console.log('Wrapper IN');
       if (ctx.request.body) {
         const event = ctx.request.body;
+        console.log('Wrapper body');
         if (event.type === 1 && event['message-in']) {
           const knexQueryBuilder = strapi.connections.default;
           const query = "Select * from senderdata where type='WhatsOfficialApi' and phone='" + event.owner + "'";
