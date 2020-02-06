@@ -10,10 +10,8 @@
         "port": 3306,
         "username": "root",
         "password": "root"
-        // "charset": "utf8mb4_unicode_ci"
       },
       "options": {
-        // "charset": "utf8mb4_unicode_ci",
         "autoMigration": true,
         "pool": {
           "min": 2,
