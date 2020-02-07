@@ -45,6 +45,7 @@ module.exports = {
 
   hookWrapperApi: async ctx => {
     try {
+      console.log('hookWrapperApi');
       if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
         const event = ctx.request.body.messages[0];
 
@@ -54,6 +55,7 @@ module.exports = {
           const query = "Select * from senderdata where type='WrapperAPI' and phone='" + to + "'";
           const knexQueryBuilder = strapi.connections.default;
           const senders = await knexQueryBuilder.raw(query);
+          console.log(senders);
           if (senders[0]) {
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
             const finded = await findMessage(event.body, sender);
@@ -110,6 +112,7 @@ module.exports = {
 };
 
 async function findMessage(message, senderData) {
+  console.log('findMessage');
     console.log(senderData);
     console.log(senderData.autoreply);
     const asterik = await strapi.services.responsewapp.findOne({ message: '*', autoreply: senderData.autoreply });
