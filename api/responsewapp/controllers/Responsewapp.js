@@ -54,7 +54,6 @@ module.exports = {
           const query = "Select * from senderdata where type='WrapperAPI' and phone='" + to + "'";
           const knexQueryBuilder = strapi.connections.default;
           const senders = await knexQueryBuilder.raw(query);
-          console.log(senders);
           if (senders[0]) {
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
             const finded = await findMessage(event.body, sender);
