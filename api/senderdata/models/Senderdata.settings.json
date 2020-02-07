@@ -32,6 +32,9 @@
     },
     "endpoint": {
       "type": "string"
+    },
+    "autoreply": {
+      "model": "autoreply"
     }
   }
 }

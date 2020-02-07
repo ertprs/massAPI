@@ -29,8 +29,8 @@
     "blocked": {
       "type": "boolean"
     },
-    "senderdata": {
-      "model": "senderdata"
+    "autoreply": {
+      "model": "autoreply"
     }
   }
 }
