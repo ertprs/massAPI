@@ -73,7 +73,7 @@ module.exports = {
         const event = ctx.request.body;
         if (event.type === 1 && event['message-in']) {
           const knexQueryBuilder = strapi.connections.default;
-          const query = "Select * from senderdata where type='WhatsOfficialApi' and phone='" + event.owner + "'";
+          const query = "Select * from senderdata where type='WhatsOfficialAPI' and phone='" + event.owner + "'";
           const senders = await knexQueryBuilder.raw(query);
           if (senders[0]) {
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
@@ -110,22 +110,22 @@ module.exports = {
 };
 
 async function findMessage(message, senderData) {
-  const asterik = await strapi.services.responsewapp.findOne({ message: '*', senderdata: senderData.id });
-  const responses = await strapi.services.responsewapp.find({ senderdata: senderData.id });
-  if (responses) {
-    let asterik_order = 99999;
-    if (asterik) {
-      asterik_order = asterik.order;
-    }
-    const finded = responses.find(obj => obj.message.toUpperCase() === message.toUpperCase() && obj.order < asterik_order);
-    if (finded) {
-      return finded;
+    const asterik = await strapi.services.responsewapp.findOne({ message: '*', autoreply: senderData.autoreply });
+    const responses = await strapi.services.responsewapp.find({ autoreply: senderData.autoreply });
+    if (responses) {
+      let asterik_order = 99999;
+      if (asterik) {
+        asterik_order = asterik.order;
+      }
+      const finded = responses.find(obj => obj.message.toUpperCase().trim() === message.toUpperCase().trim() && obj.order < asterik_order);
+      if (finded) {
+        return finded;
+      } else {
+        return asterik;
+      }
     } else {
       return asterik;
     }
-  } else {
-    return asterik;
-  }
 }
 
 async function sendMercuryMsg(event, obj, sender) {
