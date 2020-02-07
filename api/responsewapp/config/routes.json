@@ -60,7 +60,7 @@
     },
     {
       "method": "POST",
-      "path": "/hookWrapper",
+      "path": "/hookWrapperApi",
       "handler": "Responsewapp.hookWrapperApi"
     },
     {
