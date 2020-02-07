@@ -45,7 +45,6 @@ module.exports = {
 
   hookWrapperApi: async ctx => {
     try {
-      console.log('hookWrapperApi');
       if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
         const event = ctx.request.body.messages[0];
 
@@ -112,9 +111,6 @@ module.exports = {
 };
 
 async function findMessage(message, senderData) {
-  console.log('findMessage');
-    console.log(senderData);
-    console.log(senderData.autoreply);
     const asterik = await strapi.services.responsewapp.findOne({ message: '*', autoreply: senderData.autoreply });
     const responses = await strapi.services.responsewapp.find({ autoreply: senderData.autoreply });
     if (responses) {
