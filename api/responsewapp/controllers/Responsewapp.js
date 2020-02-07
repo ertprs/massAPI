@@ -110,6 +110,8 @@ module.exports = {
 };
 
 async function findMessage(message, senderData) {
+    console.log(senderData);
+    console.log(senderData.autoreply);
     const asterik = await strapi.services.responsewapp.findOne({ message: '*', autoreply: senderData.autoreply });
     const responses = await strapi.services.responsewapp.find({ autoreply: senderData.autoreply });
     if (responses) {
