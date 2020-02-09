@@ -35,6 +35,9 @@
     },
     "autoreply": {
       "model": "autoreply"
+    },
+    "conn": {
+      "type": "string"
     }
   }
 }
