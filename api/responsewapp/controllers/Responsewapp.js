@@ -14,9 +14,11 @@ module.exports = {
       const senders = await knexQueryBuilder.raw(query);
       if (senders[0]) {
         const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-        const finded = await findMessage(event.body, sender);
-        if (finded) {
-          sendMercuryMsg(event, finded, sender)
+        if(sender.conn == "on") {
+          const finded = await findMessage(event.body, sender);
+          if (finded) {
+            sendMercuryMsg(event, finded, sender)
+          }
         }
       }
     }
@@ -34,9 +36,11 @@ module.exports = {
         const senders = await knexQueryBuilder.raw(query);
         if (senders[0]) {
           const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-          const finded = await findMessage(event.body, sender);
-          if (finded) {
-            sendChatAPIMsg(event, finded, sender);
+          if(sender.conn == "on") {
+            const finded = await findMessage(event.body, sender);
+            if (finded) {
+              sendChatAPIMsg(event, finded, sender);
+            }
           }
         }
       }
@@ -56,9 +60,11 @@ module.exports = {
           const senders = await knexQueryBuilder.raw(query);
           if (senders[0]) {
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-            const finded = await findMessage(event.body, sender);
-            if (finded) {
-              sendWrapperAPIMsg(event, finded, sender)
+            if(sender.conn == "on") {
+              const finded = await findMessage(event.body, sender);
+              if (finded) {
+                sendWrapperAPIMsg(event, finded, sender)
+              }
             }
           }
         }
@@ -77,9 +83,11 @@ module.exports = {
           const senders = await knexQueryBuilder.raw(query);
           if (senders[0]) {
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-            const finded = await findMessage(event['message-in'], sender);
-            if(finded) {
-              sendWhatsOfficialAPIMsg(event,finded, sender);
+            if(sender.conn == "on") {
+              const finded = await findMessage(event['message-in'], sender);
+              if(finded) {
+                sendWhatsOfficialAPIMsg(event,finded, sender);
+              }
             }
           }
         }
@@ -99,9 +107,11 @@ module.exports = {
 
         if (senders[0]) {
           const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-          const finded = await findMessage(event.body, sender);
-          if (finded) {
-            sendTelegramAPIMsg(event, finded, sender);
+          if(sender.conn == "on") {
+            const finded = await findMessage(event.body, sender);
+            if (finded) {
+              sendTelegramAPIMsg(event, finded, sender);
+            }
           }
         }
       }
