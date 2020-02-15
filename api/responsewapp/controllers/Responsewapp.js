@@ -9,7 +9,7 @@ module.exports = {
     const event = ctx.request.body;
     if (event.type === "message" && event.data.body && !event.data.fromMe) {
       // find sender
-      const query = "Select * from senderdata where type='WrapperAPI'";
+      const query = "Select * from senderdata where type='WA.Mercury'";
       const knexQueryBuilder = strapi.connections.default;
       const senders = await knexQueryBuilder.raw(query);
       if (senders[0]) {
@@ -32,7 +32,7 @@ module.exports = {
       const event = ctx.request.body.messages[0];
       if (event.type === "chat" && event.body && !event.fromMe) {
         const knexQueryBuilder = strapi.connections.default;
-        const query = "Select * from senderdata where type='ChatAPI' and name LIKE '%instance" + ctx.request.body.instanceId + "%'";
+        const query = "Select * from senderdata where type='WA.Chat' and name LIKE '%instance" + ctx.request.body.instanceId + "%'";
         const senders = await knexQueryBuilder.raw(query);
         if (senders[0]) {
           const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
@@ -55,7 +55,7 @@ module.exports = {
         if (event.type === "chat" && event.body && !event.fromMe) {
           // get sender
           const to = event.to.split("@")[0];
-          const query = "Select * from senderdata where type='WrapperAPI' and phone='" + to + "'";
+          const query = "Select * from senderdata where type='WA.Python' and phone='" + to + "'";
           const knexQueryBuilder = strapi.connections.default;
           const senders = await knexQueryBuilder.raw(query);
           if (senders[0]) {
@@ -79,7 +79,7 @@ module.exports = {
         const event = ctx.request.body;
         if (event.type === 1 && event['message-in']) {
           const knexQueryBuilder = strapi.connections.default;
-          const query = "Select * from senderdata where type='WhatsOfficialAPI' and phone='" + event.owner + "'";
+          const query = "Select * from senderdata where type='WA.Official' and phone='" + event.owner + "'";
           const senders = await knexQueryBuilder.raw(query);
           if (senders[0]) {
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
@@ -102,7 +102,7 @@ module.exports = {
       const event = ctx.request.body.messages[0];
       if (event.type === 'chat' && event.body && !event.fromMe) {
         const knexQueryBuilder = strapi.connections.default;
-        const query = "Select * from senderdata where type='TelegramAPI' and phone='" + event.to.phone + "'";
+        const query = "Select * from senderdata where type='TG.Python' and phone='" + event.to.phone + "'";
         const senders = await knexQueryBuilder.raw(query);
 
         if (senders[0]) {
