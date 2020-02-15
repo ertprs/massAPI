@@ -116,6 +116,17 @@ module.exports = {
         }
       }
     }
+  },
+
+  hookWAGOApi: async ctx => {
+    try {
+      console.log('Go-api hook');
+      if(ctx.request.body) {
+        console.log(ctx.request.body);
+      }
+    } catch(e) {
+      console.log(e);
+    }
   }
 };
 

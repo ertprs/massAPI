@@ -77,6 +77,11 @@
       "method": "POST",
       "path": "/wappapitoken",
       "handler": "Responsewapp.setApiToken"
+    },
+    {
+      "method": "POST",
+      "path": "/hookWAGOApi",
+      "handler": "Responsewapp.hookWAGOApi"
     }
   ]
 }
