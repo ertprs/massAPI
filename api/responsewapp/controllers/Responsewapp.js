@@ -282,8 +282,7 @@ async function sendWAGOAPIMsg(event, obj, sender) {
     },
     json: true
   };
-  request(options, function(error, response, body)) {
+  request(options, function(error, response, body) {
     if(error) throw new Error(error);
-  }
-
+  });
 }
