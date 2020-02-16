@@ -131,7 +131,7 @@ module.exports = {
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
             if (sender.conn == "on") {
               const finded = await findMessage(event.text, sender);
-              console.log('--- finded-----');
+              
               if (finded) {
                 sendWAGOAPIMsg(event, finded, sender);
               }
@@ -262,6 +262,7 @@ async function sendTelegramAPIMsg(event, obj, sender) {
 
 async function sendWAGOAPIMsg(event, obj, sender) {
   var request = require("request");
+
   var options = {
     method: "POST",
     url: sender.endpoint + "/api/send/text",
@@ -277,6 +278,13 @@ async function sendWAGOAPIMsg(event, obj, sender) {
     },
     json: true
   };
+  console.log('---------------------------------');
+  console.log(sender);
+  console.log('---------------------------------');
+  console.log(obj);
+  console.log('---------------------------------');
+  console.log(event);
+  console.log('---------------------------------');
   request(options, function(error, response, body) {
     if(error) throw new Error(error);
   });
