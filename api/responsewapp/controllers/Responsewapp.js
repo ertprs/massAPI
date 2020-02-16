@@ -129,12 +129,13 @@ module.exports = {
           const num = "8616526586273";
           const query = "Select * from senderdata where type='WA.GO' and phone='" + num + "'";
           const senders = await knexQueryBuilder.raw(query);
-          console.log(senders);
           if (senders[0]) {
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-            console.log(sender);
             if (sender.conn == "on") {
-              const finded = await findMessage(event.message, sender);
+              const finded = await findMessage(event.text, sender);
+              console.log('------------------- finded ------------');
+              console.log(finded);
+              console.log('---------------------------------------');
               if (finded) {
                 sendWAGOAPIMsg(event, finded, sender);
               }
@@ -264,9 +265,6 @@ async function sendTelegramAPIMsg(event, obj, sender) {
 }
 
 async function sendWAGOAPIMsg(event, obj, sender) {
-  console.log(event);
-  console.log(obj);
-  console.log(sender);
   var request = require("request");
   var options = {
     method: "POST",
