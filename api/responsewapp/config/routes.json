@@ -80,7 +80,7 @@
     },
     {
       "method": "POST",
-      "path": "/hookWAGOApi",
+      "path": "/hookWAGOApi/message/text",
       "handler": "Responsewapp.hookWAGOApi"
     }
   ]
