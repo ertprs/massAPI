@@ -123,6 +123,7 @@ module.exports = {
       console.log('hookWAGOApi');
       if (ctx.request.body) {
         const event = ctx.request.body;
+        console.log(event);
         if (!event.fromMe) {
           const knexQueryBuilder = strapi.connections.default;
           const num = "8616526586273";
