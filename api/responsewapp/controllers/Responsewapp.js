@@ -272,7 +272,7 @@ async function sendWAGOAPIMsg(event, obj, sender) {
       numberReplyIds: [
         {
           number: event.from,
-          replyToMessageId: ''
+          replyToMessageId: 'hi'
         }
       ]
     },
