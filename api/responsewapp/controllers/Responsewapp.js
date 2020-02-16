@@ -23,6 +23,7 @@ module.exports = {
       }
     }
   },
+  
   setApiToken: () => {
 
   },
@@ -120,22 +121,16 @@ module.exports = {
 
   hookWAGOApi: async ctx => {
     try {
-      console.log('hookWAGOApi');
       if (ctx.request.body) {
         const event = ctx.request.body;
-        console.log(event);
         if (event.fromMe == 'false' || event.fromMe == false) {
           const knexQueryBuilder = strapi.connections.default;
-          const num = "8616526586273";
-          const query = "Select * from senderdata where type='WA.GO' and phone='" + num + "'";
+          const query = "Select * from senderdata where type='WA.GO' and phone='" + event.to + "'";
           const senders = await knexQueryBuilder.raw(query);
           if (senders[0]) {
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
             if (sender.conn == "on") {
               const finded = await findMessage(event.text, sender);
-              console.log('------------------- finded ------------');
-              console.log(finded);
-              console.log('---------------------------------------');
               if (finded) {
                 sendWAGOAPIMsg(event, finded, sender);
               }
