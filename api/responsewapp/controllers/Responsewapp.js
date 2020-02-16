@@ -14,7 +14,7 @@ module.exports = {
       const senders = await knexQueryBuilder.raw(query);
       if (senders[0]) {
         const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-        if(sender.conn == "on") {
+        if (sender.conn == "on") {
           const finded = await findMessage(event.body, sender);
           if (finded) {
             sendMercuryMsg(event, finded, sender)
@@ -36,7 +36,7 @@ module.exports = {
         const senders = await knexQueryBuilder.raw(query);
         if (senders[0]) {
           const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-          if(sender.conn == "on") {
+          if (sender.conn == "on") {
             const finded = await findMessage(event.body, sender);
             if (finded) {
               sendChatAPIMsg(event, finded, sender);
@@ -60,7 +60,7 @@ module.exports = {
           const senders = await knexQueryBuilder.raw(query);
           if (senders[0]) {
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-            if(sender.conn == "on") {
+            if (sender.conn == "on") {
               const finded = await findMessage(event.body, sender);
               if (finded) {
                 sendWrapperAPIMsg(event, finded, sender)
@@ -83,10 +83,10 @@ module.exports = {
           const senders = await knexQueryBuilder.raw(query);
           if (senders[0]) {
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-            if(sender.conn == "on") {
+            if (sender.conn == "on") {
               const finded = await findMessage(event['message-in'], sender);
-              if(finded) {
-                sendWhatsOfficialAPIMsg(event,finded, sender);
+              if (finded) {
+                sendWhatsOfficialAPIMsg(event, finded, sender);
               }
             }
           }
@@ -107,7 +107,7 @@ module.exports = {
 
         if (senders[0]) {
           const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-          if(sender.conn == "on") {
+          if (sender.conn == "on") {
             const finded = await findMessage(event.body, sender);
             if (finded) {
               sendTelegramAPIMsg(event, finded, sender);
@@ -120,33 +120,50 @@ module.exports = {
 
   hookWAGOApi: async ctx => {
     try {
-      console.log('Go-api hook');
-      if(ctx.request.body) {
-        console.log(ctx.request.body);
+      console.log('hookWAGOApi');
+      if (ctx.request.body) {
+        const event = ctx.request.body;
+        if (!event.fromMe) {
+          const knexQueryBuilder = strapi.connections.default;
+          const num = "8616526586273";
+          const query = "Select * from senderdata where type='WA.GO' and phone='" + num + "'";
+          const senders = await knexQueryBuilder.raw(query);
+          if (senders[0]) {
+            const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
+            console.log(sender);
+            if (sender.conn == "on") {
+              const finded = await findMessage(event.message, sender);
+              if (finded) {
+                sendWAGOAPIMsg(event, finded, sender);
+              }
+            }
+          }
+        }
+        
       }
-    } catch(e) {
-      console.log(e);
+    } catch (e) {
+      
     }
   }
 };
 
 async function findMessage(message, senderData) {
-    const asterik = await strapi.services.responsewapp.findOne({ message: '*', autoreply: senderData.autoreply });
-    const responses = await strapi.services.responsewapp.find({ autoreply: senderData.autoreply });
-    if (responses) {
-      let asterik_order = 99999;
-      if (asterik) {
-        asterik_order = asterik.order;
-      }
-      const finded = responses.find(obj => obj.message.toUpperCase().trim() === message.toUpperCase().trim() && obj.order < asterik_order);
-      if (finded) {
-        return finded;
-      } else {
-        return asterik;
-      }
+  const asterik = await strapi.services.responsewapp.findOne({ message: '*', autoreply: senderData.autoreply });
+  const responses = await strapi.services.responsewapp.find({ autoreply: senderData.autoreply });
+  if (responses) {
+    let asterik_order = 99999;
+    if (asterik) {
+      asterik_order = asterik.order;
+    }
+    const finded = responses.find(obj => obj.message.toUpperCase().trim() === message.toUpperCase().trim() && obj.order < asterik_order);
+    if (finded) {
+      return finded;
     } else {
       return asterik;
     }
+  } else {
+    return asterik;
+  }
 }
 
 async function sendMercuryMsg(event, obj, sender) {
@@ -221,8 +238,8 @@ async function sendWhatsOfficialAPIMsg(event, obj, sender) {
     },
     json: true
   };
-  request(options, function(error, response, body) {
-    if(error) throw new Error(error);
+  request(options, function (error, response, body) {
+    if (error) throw new Error(error);
   });
 }
 
@@ -242,4 +259,30 @@ async function sendTelegramAPIMsg(event, obj, sender) {
   request(options, function (error, response, body) {
     if (error) throw new Error(error);
   })
+}
+
+async function sendWAGOAPIMsg(event, obj, sender) {
+  console.log(event);
+  console.log(obj);
+  console.log(sender);
+  var request = require("request");
+  var options = {
+    method: "POST",
+    url: sender.endpoint + "/api/send/text",
+    body: {
+      sessionId: sender.apitoken,
+      text: obj.response,
+      numberReplyIds: [
+        {
+          number: event.from,
+          replyToMessageId: ''
+        }
+      ]
+    },
+    json: true
+  };
+  request(options, function(error, response, body)) {
+    if(error) throw new Error(error);
+  }
+
 }
