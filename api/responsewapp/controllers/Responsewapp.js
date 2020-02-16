@@ -129,6 +129,7 @@ module.exports = {
           const num = "8616526586273";
           const query = "Select * from senderdata where type='WA.GO' and phone='" + num + "'";
           const senders = await knexQueryBuilder.raw(query);
+          console.log(senders);
           if (senders[0]) {
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
             console.log(sender);
