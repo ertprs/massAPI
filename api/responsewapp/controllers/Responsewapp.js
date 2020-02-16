@@ -131,6 +131,7 @@ module.exports = {
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
             if (sender.conn == "on") {
               const finded = await findMessage(event.text, sender);
+              console.log('--- finded-----');
               if (finded) {
                 sendWAGOAPIMsg(event, finded, sender);
               }
