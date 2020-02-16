@@ -278,13 +278,6 @@ async function sendWAGOAPIMsg(event, obj, sender) {
     },
     json: true
   };
-  console.log('---------------------------------');
-  console.log(sender);
-  console.log('---------------------------------');
-  console.log(obj);
-  console.log('---------------------------------');
-  console.log(event);
-  console.log('---------------------------------');
   request(options, function(error, response, body) {
     if(error) throw new Error(error);
   });
