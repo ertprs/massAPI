@@ -156,7 +156,7 @@ module.exports = {
         const senders = await knexQueryBuilder.raw(query);
         if(senders[0]) {
           const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-          sendWAGOAPIMsgBulk(phones, message, sender)
+          await sendWAGOAPIMsgBulk(phones, message, sender)
           .then(response => {
             console.log(response);
           })
