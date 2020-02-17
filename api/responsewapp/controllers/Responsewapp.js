@@ -156,7 +156,8 @@ module.exports = {
         const senders = await knexQueryBuilder.raw(query);
         if(senders[0]) {
           const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-          sendWAGOAPIMsgBulk(phones, message, sender);
+          var result = await sendWAGOAPIMsgBulk(phones, message, sender);
+          console.log(result);
         } else {
 
         }
@@ -305,32 +306,36 @@ async function sendWAGOAPIMsg(from, message, sender) {
   });
 }
 
-async function sendWAGOAPIMsgBulk(phones, message, sender) {
+function sendWAGOAPIMsgBulk(phones, message, sender) {
   var request = require("request");
   var list = [];
   const v = phones.split(/[,]/);
-  for(var i = 0 ; i < v.length ; i++) {
-    var rep = {
-      number: v[i],
-      replyToMessageId: 'hi'
+  return new Promise(function(resolve, reject) {
+    for(var i = 0 ; i < v.length ; i++) {
+      var rep = {
+        number: v[i],
+        replyToMessageId: 'hi'
+      }
+      list.push(rep);
     }
-    list.push(rep);
-  }
+  
+    var options = {
+      method: "POST",
+      url: sender.endpoint + "/api/send/text",
+      body: {
+        sessionId: sender.apitoken,
+        text: message,
+        numberReplyIds: list
+      },
+      json:true
+    };
+  
+    request(options, function(error, response, body) {
+      if(error) {
+        reject(error)
+      }
+      resolve(response)
+    });
+  })
 
-  var options = {
-    method: "POST",
-    url: sender.endpoint + "/api/send/text",
-    body: {
-      sessionId: sender.apitoken,
-      text: message,
-      numberReplyIds: list
-    },
-    json:true
-  };
-
-  request(options, function(error, response, body) {
-    if(error) throw new Error(error);
-  });
-
-  console.log(options);
 }
