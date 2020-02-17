@@ -144,10 +144,10 @@ module.exports = {
       
     }
   },
+
   sendWAGOBulkSendApi: async ctx => {
     try {
       if(ctx.request.body) {
-        console.log('sendWAGOBulkSendApi');
         const senderId = ctx.request.body.senderId;
         const message = ctx.request.body.message;
         const phones = ctx.request.body.phones;
@@ -339,7 +339,6 @@ function sendWAGOAPIMsgBulk(phones, message, sender) {
     };
   
     request(options, function(error, response, body) {
-      console.log(body);
       if(error) {
         reject("error");
       }
