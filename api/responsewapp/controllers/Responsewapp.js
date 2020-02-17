@@ -339,6 +339,7 @@ function sendWAGOAPIMsgBulk(phones, message, sender) {
     };
   
     request(options, function(error, response, body) {
+      console.log(body);
       if(error) {
         reject("error");
       }
