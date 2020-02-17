@@ -159,20 +159,20 @@ module.exports = {
           await sendWAGOAPIMsgBulk(phones, message, sender)
           .then(response => {
             if(response == "success") {
-              return "success";
+              ctx.send("success");
             } else {
-              return "fail";
+              ctx.send("fail");
             }
           })
           .catch(error => {
-            return "fail";
+            ctx.send("fail");
           });
         } else {
-          return "fail";
+          ctx.send("fail");
         }
       }
     } catch (e) {
-      return "fail";
+      ctx.send("fail");
     }
   }
 };
