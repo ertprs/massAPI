@@ -328,9 +328,9 @@ async function sendWAGOAPIMsgBulk(phones, message, sender) {
     json:true
   };
 
-  // request(options, function(error, response, body) {
-  //   if(error) throw new Error(error);
-  // });
+  request(options, function(error, response, body) {
+    if(error) throw new Error(error);
+  });
 
   console.log(options);
 }
