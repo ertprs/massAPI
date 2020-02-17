@@ -158,18 +158,21 @@ module.exports = {
           const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
           await sendWAGOAPIMsgBulk(phones, message, sender)
           .then(response => {
-            console.log(response);
+            if(response == "success") {
+              return "success";
+            } else {
+              return "fail";
+            }
           })
           .catch(error => {
-            console.log(error);
+            return "fail";
           });
-          console.log('after sendWAGO');
         } else {
-
+          return "fail";
         }
       }
     } catch (e) {
-
+      return "fail";
     }
   }
 };
