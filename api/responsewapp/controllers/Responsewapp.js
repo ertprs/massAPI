@@ -156,12 +156,17 @@ module.exports = {
         const senders = await knexQueryBuilder.raw(query);
         if(senders[0]) {
           const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-          var result = await sendWAGOAPIMsgBulk(phones, message, sender);
-          console.log(result);
+          sendWAGOAPIMsgBulk(phones, message, sender)
+          .then(response => {
+            console.log(response);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+          console.log('after sendWAGO');
         } else {
 
         }
-        
       }
     } catch (e) {
 
@@ -332,10 +337,9 @@ function sendWAGOAPIMsgBulk(phones, message, sender) {
   
     request(options, function(error, response, body) {
       if(error) {
-        reject(error)
+        reject("error");
       }
-      resolve(response)
+      resolve("success");
     });
   })
-
 }
