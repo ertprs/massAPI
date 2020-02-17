@@ -82,6 +82,11 @@
       "method": "POST",
       "path": "/hookWAGOApi/message/text",
       "handler": "Responsewapp.hookWAGOApi"
+    },
+    {
+      "method": "POST",
+      "path": "/WAGO/BulkSendApi",
+      "handler": "Responsewapp.sendWAGOBulkSendApi"
     }
   ]
 }

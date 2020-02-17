@@ -133,7 +133,7 @@ module.exports = {
               const finded = await findMessage(event.text, sender);
               
               if (finded) {
-                sendWAGOAPIMsg(event, finded, sender);
+                sendWAGOAPIMsg(event.from, finded.response, sender);
               }
             }
           }
@@ -142,6 +142,28 @@ module.exports = {
       }
     } catch (e) {
       
+    }
+  },
+  sendWAGOBulkSendApi: async ctx => {
+    try {
+      if(ctx.request.body) {
+        console.log('sendWAGOBulkSendApi');
+        const senderId = ctx.request.body.senderId;
+        const message = ctx.request.body.message;
+        const phones = ctx.request.body.phones;
+        const knexQueryBuilder = strapi.connections.default;
+        const query = "Select * from senderdata where id=" + senderId;
+        const senders = await knexQueryBuilder.raw(query);
+        if(senders[0]) {
+          const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
+          sendWAGOAPIMsgBulk(phones, message, sender);
+        } else {
+
+        }
+        
+      }
+    } catch (e) {
+
     }
   }
 };
@@ -260,7 +282,7 @@ async function sendTelegramAPIMsg(event, obj, sender) {
   })
 }
 
-async function sendWAGOAPIMsg(event, obj, sender) {
+async function sendWAGOAPIMsg(from, message, sender) {
   var request = require("request");
 
   var options = {
@@ -268,10 +290,10 @@ async function sendWAGOAPIMsg(event, obj, sender) {
     url: sender.endpoint + "/api/send/text",
     body: {
       sessionId: sender.apitoken,
-      text: obj.response,
+      text: message,
       numberReplyIds: [
         {
-          number: event.from,
+          number: from,
           replyToMessageId: 'hi'
         }
       ]
@@ -281,4 +303,34 @@ async function sendWAGOAPIMsg(event, obj, sender) {
   request(options, function(error, response, body) {
     if(error) throw new Error(error);
   });
+}
+
+async function sendWAGOAPIMsgBulk(phones, message, sender) {
+  var request = require("request");
+  var list = [];
+  const v = phones.split(/[,]/);
+  for(var i = 0 ; i < v.length ; i++) {
+    var rep = {
+      number: v[i],
+      replyToMessageId: 'hi'
+    }
+    list.push(rep);
+  }
+
+  var options = {
+    method: "POST",
+    url: sender.endpoint + "/api/send/text",
+    body: {
+      sessionId: sender.apitoken,
+      text: message,
+      numberReplyIds: list
+    },
+    json:true
+  };
+
+  // request(options, function(error, response, body) {
+  //   if(error) throw new Error(error);
+  // });
+
+  console.log(options);
 }
