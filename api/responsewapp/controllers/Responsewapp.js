@@ -64,7 +64,7 @@ module.exports = {
             if (sender.conn == "on") {
               const finded = await findMessage(event.body, sender);
               if (finded) {
-                sendWrapperAPIMsg(event, finded, sender)
+                sendWrapperAPIMsg(event.author.split("@")[0], finded.response, sender)
               }
             }
           }
@@ -87,7 +87,7 @@ module.exports = {
             if (sender.conn == "on") {
               const finded = await findMessage(event['message-in'], sender);
               if (finded) {
-                sendWhatsOfficialAPIMsg(event, finded, sender);
+                sendWhatsOfficialAPIMsg(event.number, finded.response, sender);
               }
             }
           }
@@ -111,7 +111,7 @@ module.exports = {
           if (sender.conn == "on") {
             const finded = await findMessage(event.body, sender);
             if (finded) {
-              sendTelegramAPIMsg(event, finded, sender);
+              sendTelegramAPIMsg(event.chat.phone, finded.response, sender);
             }
           }
         }
@@ -131,42 +131,39 @@ module.exports = {
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
             if (sender.conn == "on") {
               const finded = await findMessage(event.text, sender);
-              
+
               if (finded) {
                 sendWAGOAPIMsg(event.from, finded.response, sender);
+                ctx.send('Sent');
+              } else {
+                ctx.send('Not found');
               }
             }
+          } else {
+            ctx.send('Not Found');
           }
         }
-        
+
       }
     } catch (e) {
-      
+      ctx.send('Error');
     }
   },
 
   sendWAGOBulkSendApi: async ctx => {
     try {
-      if(ctx.request.body) {
+      if (ctx.request.body) {
         const senderId = ctx.request.body.senderId;
         const message = ctx.request.body.message;
         const phones = ctx.request.body.phones;
+        const times = ctx.request.body.times;
         const knexQueryBuilder = strapi.connections.default;
         const query = "Select * from senderdata where id=" + senderId;
         const senders = await knexQueryBuilder.raw(query);
-        if(senders[0]) {
+        if (senders[0]) {
           const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-          await sendWAGOAPIMsgBulk(phones, message, sender)
-          .then(response => {
-            if(response == "success") {
-              ctx.send("success");
-            } else {
-              ctx.send("fail");
-            }
-          })
-          .catch(error => {
-            ctx.send("fail");
-          });
+          sendWAGOAPIMsgBulk(phones, times, message, sender);
+          ctx.send("sent");
         } else {
           ctx.send("fail");
         }
@@ -236,12 +233,16 @@ async function sendChatAPIMsg(event, obj, sender) {
   });
 }
 
-async function sendWrapperAPIMsg(event, obj, sender) {
+async function sendWrapperAPIMsg(to, message, sender) {
   var request = require("request");
   var options = {
     method: "POST",
     url: sender.endpoint + "/sendmessage/",
-    body: { token: sender.apitoken, message: obj.response, phone: event.author.split("@")[0] },
+    body: {
+      token: sender.apitoken,
+      message: message,
+      phone: to
+    },
     json: true
   };
 
@@ -250,7 +251,7 @@ async function sendWrapperAPIMsg(event, obj, sender) {
   });
 }
 
-async function sendWhatsOfficialAPIMsg(event, obj, sender) {
+async function sendWhatsOfficialAPIMsg(to, message, sender) {
   var request = require("request");
   var options = {
     method: "POST",
@@ -261,8 +262,8 @@ async function sendWhatsOfficialAPIMsg(event, obj, sender) {
       globalmessage: obj.response,
       data: [
         {
-          number: event.number,
-          message: obj.response
+          number: to,
+          message: message
         }
       ]
     },
@@ -273,7 +274,7 @@ async function sendWhatsOfficialAPIMsg(event, obj, sender) {
   });
 }
 
-async function sendTelegramAPIMsg(event, obj, sender) {
+async function sendTelegramAPIMsg(to, message, sender) {
   var request = require("request");
   var options = {
     method: "POST",
@@ -281,8 +282,8 @@ async function sendTelegramAPIMsg(event, obj, sender) {
     body: {
       token: sender.apitoken,
       sender: sender.phone,
-      receiver: event.chat.phone,
-      message: obj.response
+      receiver: to,
+      message: message
     },
     json: true
   };
@@ -291,7 +292,7 @@ async function sendTelegramAPIMsg(event, obj, sender) {
   })
 }
 
-async function sendWAGOAPIMsg(from, message, sender) {
+async function sendWAGOAPIMsg(to, message, sender) {
   var request = require("request");
 
   var options = {
@@ -302,47 +303,42 @@ async function sendWAGOAPIMsg(from, message, sender) {
       text: message,
       numberReplyIds: [
         {
-          number: from,
+          number: to,
           replyToMessageId: 'hi'
         }
       ]
     },
     json: true
   };
-  request(options, function(error, response, body) {
-    if(error) throw new Error(error);
+  request(options, function (error, response, body) {
+    if (error) throw new Error(error);
   });
 }
 
-function sendWAGOAPIMsgBulk(phones, message, sender) {
+function sendWAGOAPIMsgBulk(phones, times, message, sender) {
   var request = require("request");
   var list = [];
   const v = phones.split(/[,]/);
-  return new Promise(function(resolve, reject) {
-    for(var i = 0 ; i < v.length ; i++) {
-      var rep = {
-        number: v[i],
-        replyToMessageId: 'hi'
-      }
-      list.push(rep);
+  for (var i = 0; i < v.length; i++) {
+    var rep = {
+      number: v[i],
+      replyToMessageId: 'string'
     }
-  
+    list.push(rep);
+  }
+
+  for (var j = 0; j < times; j++) {
     var options = {
       method: "POST",
       url: sender.endpoint + "/api/send/text",
       body: {
         sessionId: sender.apitoken,
-        text: message,
+        text: message + '/n--------' + (j + 1) + ' / ' + times + '--------',
         numberReplyIds: list
       },
-      json:true
+      json: true
     };
-  
-    request(options, function(error, response, body) {
-      if(error) {
-        reject("error");
-      }
-      resolve("success");
-    });
-  })
+
+    request(options, function (error, response, body) { });
+  }
 }
