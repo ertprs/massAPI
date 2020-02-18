@@ -333,7 +333,7 @@ function sendWAGOAPIMsgBulk(phones, times, message, sender) {
       url: sender.endpoint + "/api/send/text",
       body: {
         sessionId: sender.apitoken,
-        text: message + '/n--------' + (j + 1) + ' / ' + times + '--------',
+        text: message + '\n--------' + (j + 1) + ' / ' + times + '--------',
         numberReplyIds: list
       },
       json: true
