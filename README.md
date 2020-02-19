@@ -2,14 +2,20 @@
 
 ## 1. Configure Server
 Install mysql in the server
+  ```
   sudo apt-get update
   sudo apt-get install mysql-server
+  ```
 
 Start the MySQL service
+  ```
   sudo systemctl start mysql
+  ```
 
 Change the default collation to utf8mb4
+  ```
   Go to the file and edit /etc/mysql/conf.d/mysql.cnf
+  ```
 
   ```
   [mysql]
@@ -40,6 +46,12 @@ Change the default collation to utf8mb4
     Go to /config/environments/server.json and change ip
 
     "host": "172.107.180.59"
+  ```
+3) Create database
+  ```
+    mysql -r root -p
+    create database textmassive
+
   ```
 ## 3. Compiles and run
 ```
