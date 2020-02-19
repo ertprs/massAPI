@@ -41,7 +41,7 @@ Change the default collation to utf8mb4
 
     "host": "172.107.180.59"
   ```
-## 3. Compiles and hot-reloads for development
+## 3. Compiles and run
 ```
   npm run build
 ```
