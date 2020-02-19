@@ -9,7 +9,7 @@ Start the MySQL service
   sudo systemctl start mysql
 
 Change the default collation to utf8mb4
-  /etc/mysql/conf.d/mysql.cnf
+  Go to the file and edit /etc/mysql/conf.d/mysql.cnf
 
   ```
   [mysql]
@@ -24,12 +24,18 @@ Change the default collation to utf8mb4
   collation-server = utf8mb4_unicode_ci
   ```
 
-## Project setup
-```
-npm install
-```
+## 2. Project setup
 
-### Compiles and hot-reloads for development
+1) Install node module
+  npm install
+
+2) Change the environment variable
+  Go to the .env file and change the ip
+  CURRENT_URL = http://172.107.180.59:1337
+  Go to /config/environments/server.json and change ip
+  "host": "172.107.180.59"
+
+## 3. Compiles and hot-reloads for development
 ```
 npm run build
 ```
