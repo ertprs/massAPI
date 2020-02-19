@@ -28,20 +28,20 @@ Change the default collation to utf8mb4
 
 1) Install node module
   ```
-  npm install
+    npm install
+  ```
 
 2) Change the environment variable
   ```
-  Go to the .env file and change the ip
-  ``
-  CURRENT_URL = http://172.107.180.59:1337
+    Go to the .env file and change the ip
   
-  ```
-  Go to /config/environments/server.json and change ip
-  ``
-  "host": "172.107.180.59"
+    CURRENT_URL = http://172.107.180.59:1337
 
+    Go to /config/environments/server.json and change ip
+
+    "host": "172.107.180.59"
+  ```
 ## 3. Compiles and hot-reloads for development
 ```
-npm run build
+  npm run build
 ```
