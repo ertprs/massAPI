@@ -318,7 +318,8 @@ async function sendWAGOAPIMsg(to, message, sender) {
 
 function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
   var request = require("request");
-  var list = [];
+  var sleep = require("sleep");
+  // var list = [];
   const v = phones.split(/[,]/);
   const count = v.length;
   for(var i = 0 ; i < times ; i++) {
@@ -339,7 +340,7 @@ function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
         json: true
       }
       request(options, function (error, response, body) { });
-      
+      sleep.msleep(delay);
     }
   }
 
