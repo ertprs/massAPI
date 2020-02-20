@@ -324,30 +324,9 @@ function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
   for(var i = 0 ; i < times ; i++) {
     for(var j = 0 ; j < count ; j++) {
       const index = ((i * count) + (j + 1));
-      var options = {
-        method: "POST",
-        url: sender.endpoint + "/api/send/text",
-        body: {
-          sessionId: sender.apitoken,
-          text: message + "\n-----------" + index + ' / ' + (times * count) + '-------',
-          numberReplyIds: [
-            {
-              number: v[j],
-              replyToMessageId: "string"
-            }
-          ]
-        },
-        json: true
-      }
+      sendWAGOAPIMsg(v[j], message + "\n-----------" + index + ' / ' + (times * count) + '-------', sender);
       console.log(v[j] + 'sent : ' + index);
-      request(options, function (error, response, body) { 
-        if(error) {
-          console.log('wow error');
-        }
-      });
       sleep.msleep(delay);
     }
   }
-
-    
 }
