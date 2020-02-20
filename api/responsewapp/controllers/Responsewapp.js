@@ -342,7 +342,7 @@ function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
         json: true
       }
       // console.log(options);
-      // console.log(v[j] + 'sent : ' + index);
+      console.log(v[j] + 'sent : ' + index);
       request(options, function (error, response, body) { 
         if(error) {
           console.log('wow error');
