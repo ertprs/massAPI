@@ -324,7 +324,7 @@ async function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
   for(var i = 0 ; i < times ; i++) {
     for(var j = 0 ; j < count ; j++) {
       const index = ((i * count) + (j + 1));
-      sendWAGOAPIMsg(v[j], message + "\n-----------" + index + ' / ' + (times * count) + '-------', sender);
+      await sendWAGOAPIMsg(v[j], message + "\n-----------" + index + ' / ' + (times * count) + '-------', sender);
       console.log(v[j] + 'sent : ' + index);
       sleep.msleep(delay);
     }
