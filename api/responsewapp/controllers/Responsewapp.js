@@ -337,15 +337,10 @@ async function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
     for (var j = 0; j < count; j++) {
       const index = ((i * count) + (j + 1));
 
-      promises.push( new Promise((resolve, reject) => {
-        setTimeout(() => {
-          console.log(j);
-          console.log(v[j]);
-          console.log(count);
-          // sendWAGOAPIMsg(v[j], message + "\n-----------" + index + ' / ' + (times * count) + '-------', sender);
-          console.log(v[j] + ' : ' + index);
-          resolve(index + ' : sent');
-        }, delay);
+      promises.push(new Promise((resolve, reject) => {
+        // sendWAGOAPIMsg(v[j], message + "\n-----------" + index + ' / ' + (times * count) + '-------', sender);
+        console.log(v[j] + ' : ' + index);
+        resolve(index + ' : sent');
       }));
     }
   }
