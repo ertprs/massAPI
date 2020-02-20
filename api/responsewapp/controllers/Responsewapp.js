@@ -320,11 +320,11 @@ async function sendWAGOAPIMsg(to, message, sender) {
 
   request(options, function (err, resp, body) {
     if (err) {
-      reject(err);
+      console.log('wago send error');
     } else {
-      resolve(body);
+      console.log('wago sent');
     }
-  })
+  });
 }
 
 async function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
@@ -340,6 +340,7 @@ async function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
       promises.push( new Promise((resolve, reject) => {
         setTimeout(() => {
           sendWAGOAPIMsg(v[j], message + "\n-----------" + index + ' / ' + (times * count) + '-------', sender);
+          console.log(v[j] + ' : ' + index);
           resolve(index + ' : sent');
         }, delay);
       }));
