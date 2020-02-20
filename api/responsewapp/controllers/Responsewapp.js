@@ -321,14 +321,14 @@ async function sendWAGOAPIMsg(to, message, sender, delay) {
     sleep.msleep(delay);
   }
   console.log('lol');
-  // request(options, function (err, resp, body) {
-  //   if (err) {
-  //     console.log('wago send error');
-  //   } else {
-  //     console.log('wago sent');
-  //     console.log(body);
-  //   }
-  // });
+  request(options, function (err, resp, body) {
+    if (err) {
+      console.log('wago send error');
+    } else {
+      console.log('wago sent');
+      console.log(body);
+    }
+  });
 }
 
 async function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
