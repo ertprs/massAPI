@@ -335,21 +335,20 @@ function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
           numberReplyIds: [
             {
               number: v[j],
-              replyToMessageId: (i * times) + (j + 1)
+              replyToMessageId: "string"
             }
           ]
         },
         json: true
       }
+      console.log(options);
       console.log(v[j] + 'sent : ' + index);
       request(options, function (error, response, body) { 
         if(error) {
           console.log('wow error');
         }
       });
-      console.log('before delay');
       sleep.msleep(delay);
-      console.log('after delay');
     }
   }
 
