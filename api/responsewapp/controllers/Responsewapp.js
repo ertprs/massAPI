@@ -133,18 +133,7 @@ module.exports = {
               const finded = await findMessage(event.text, sender);
 
               if (finded) {
-                sendWAGOAPIMsg(event.from, finded.response, sender).then(res => {
-                  console.log('------------hook wago success ------------');
-                  console.log(res);
-                  console.log('-------------------------------------------');
-                  ctx.status(200).send('sent');
-                })
-                .catch(err => {
-                  console.log('------------hook wago error ------------');
-                  ctx.status(404).send('error');
-                  console.log('-------------------------------------------');
-                });
-                
+                sendWAGOAPIMsg(event.from, finded.response, sender);
                 ctx.send('Sent');
               } else {
                 ctx.send('Not found');
@@ -174,8 +163,14 @@ module.exports = {
         const senders = await knexQueryBuilder.raw(query);
         if (senders[0]) {
           const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-          sendWAGOAPIMsgBulk(phones, times, delay, message, sender);
-          ctx.send("sent");
+          await Promise.all(sendWAGOAPIMsgBulk(phones, times, delay, message, sender))
+            .then(res => {
+              ctx.send("sent");
+            })
+            .catch(err => {
+              ctx.send("fail");
+            });
+
         } else {
           ctx.send("fail");
         }
@@ -307,44 +302,49 @@ async function sendTelegramAPIMsg(to, message, sender) {
 async function sendWAGOAPIMsg(to, message, sender) {
   var request = require("request");
 
-  return new Promise((resolve, reject) => {
-    var options = {
-      method: "POST",
-      url: sender.endpoint + "/api/send/text",
-      body: {
-        sessionId: sender.apitoken,
-        text: message,
-        numberReplyIds: [
-          {
-            number: to,
-            replyToMessageId: 'hi'
-          }
-        ]
-      },
-      json: true
-    };
+  var options = {
+    method: "POST",
+    url: sender.endpoint + "/api/send/text",
+    body: {
+      sessionId: sender.apitoken,
+      text: message,
+      numberReplyIds: [
+        {
+          number: to,
+          replyToMessageId: 'hi'
+        }
+      ]
+    },
+    json: true
+  };
 
-    request(options, function(err, resp, body) {
-      if(err) {
-        reject(err)
-      } else {
-        resolve(body);
-      }
-    });
+  request(options, function (err, resp, body) {
+    if (err) {
+      reject(err);
+    } else {
+      resolve(body);
+    }
   })
 }
 
 async function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
   // var request = require("request");
-  var sleep = require("sleep");
+  // var sleep = require("sleep");
   const v = phones.split(/[,]/);
   const count = v.length;
+  let promises = [];
   for (var i = 0; i < times; i++) {
     for (var j = 0; j < count; j++) {
       const index = ((i * count) + (j + 1));
-      await sendWAGOAPIMsg(v[j], message + "\n-----------" + index + ' / ' + (times * count) + '-------', sender);
-      console.log(v[j] + 'sent : ' + index);
-      sleep.msleep(delay);
+
+      promises.push( new Promise((resolve, reject) => {
+        setTimeout(() => {
+          sendWAGOAPIMsg(v[j], message + "\n-----------" + index + ' / ' + (times * count) + '-------', sender);
+          resolve(index + ' : sent');
+        }, delay);
+      }));
     }
   }
+
+  return promises;
 }
