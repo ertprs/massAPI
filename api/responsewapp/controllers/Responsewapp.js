@@ -301,6 +301,7 @@ async function sendTelegramAPIMsg(to, message, sender) {
 
 async function sendWAGOAPIMsg(to, message, sender, delay) {
   var request = require("request");
+  var sleep = require("sleep");
   var options = {
     method: "POST",
     url: sender.endpoint + "/api/send/text",
@@ -316,20 +317,23 @@ async function sendWAGOAPIMsg(to, message, sender, delay) {
     },
     json: true
   };
-
-  request(options, function (err, resp, body) {
-    if (err) {
-      console.log('wago send error');
-    } else {
-      console.log('wago sent');
-      console.log(body);
-    }
-  });
+  if(delay) {
+    sleep.msleep(delay);
+  }
+  console.log('lol');
+  // request(options, function (err, resp, body) {
+  //   if (err) {
+  //     console.log('wago send error');
+  //   } else {
+  //     console.log('wago sent');
+  //     console.log(body);
+  //   }
+  // });
 }
 
 async function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
   // var request = require("request");
-  // var sleep = require("sleep");
+  
   const v = phones.split(/[,]/);
   const count = v.length;
   let promises = [];
