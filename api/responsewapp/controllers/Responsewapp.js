@@ -301,34 +301,30 @@ async function sendTelegramAPIMsg(to, message, sender) {
 
 async function sendWAGOAPIMsg(to, message, sender, delay) {
   var request = require("request");
-  if(delay > 0) {
-    setTimeout(() => {
-      var options = {
-        method: "POST",
-        url: sender.endpoint + "/api/send/text",
-        body: {
-          sessionId: sender.apitoken,
-          text: message,
-          numberReplyIds: [
-            {
-              number: to,
-              replyToMessageId: 'hi'
-            }
-          ]
-        },
-        json: true
-      };
-    
-      request(options, function (err, resp, body) {
-        if (err) {
-          console.log('wago send error');
-        } else {
-          console.log('wago sent');
-          console.log(body);
+  var options = {
+    method: "POST",
+    url: sender.endpoint + "/api/send/text",
+    body: {
+      sessionId: sender.apitoken,
+      text: message,
+      numberReplyIds: [
+        {
+          number: to,
+          replyToMessageId: 'hi'
         }
-      });
-    }, delay);
-  }
+      ]
+    },
+    json: true
+  };
+
+  request(options, function (err, resp, body) {
+    if (err) {
+      console.log('wago send error');
+    } else {
+      console.log('wago sent');
+      console.log(body);
+    }
+  });
 }
 
 async function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
@@ -341,7 +337,7 @@ async function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
     for (var j = 0; j < count; j++) {
       const index = ((i * count) + (j + 1));
       promises.push(new Promise((resolve, reject) => {
-        sendWAGOAPIMsg(v[j], message + "\n-----------" + index + ' / ' + (times * count) + '-------', sender, delay);
+        // sendWAGOAPIMsg(v[j], message + "\n-----------" + index + ' / ' + (times * count) + '-------', sender, delay);
         console.log(v[j] + ' : ' + index, delay);
         resolve(index + ' : sent');
       }));
