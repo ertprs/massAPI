@@ -322,7 +322,7 @@ function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
   // var list = [];
   const v = phones.split(/[,]/);
   const count = v.length;
-  console.log(delay);
+  // console.log(delay);
   for(var i = 0 ; i < times ; i++) {
     for(var j = 0 ; j < count ; j++) {
       const index = i * times + j + 1;
@@ -341,8 +341,8 @@ function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
         },
         json: true
       }
-      console.log(options);
-      console.log(v[j] + 'sent : ' + index);
+      // console.log(options);
+      // console.log(v[j] + 'sent : ' + index);
       request(options, function (error, response, body) { 
         if(error) {
           console.log('wow error');
