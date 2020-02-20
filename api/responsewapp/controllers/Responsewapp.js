@@ -133,7 +133,7 @@ module.exports = {
               const finded = await findMessage(event.text, sender);
 
               if (finded) {
-                sendWAGOAPIMsg(event.from, finded.response, sender);
+                sendWAGOAPIMsg(event.from, finded.response, sender, 0);
                 ctx.send('Sent');
               } else {
                 ctx.send('Not found');
@@ -299,32 +299,35 @@ async function sendTelegramAPIMsg(to, message, sender) {
   })
 }
 
-async function sendWAGOAPIMsg(to, message, sender) {
+async function sendWAGOAPIMsg(to, message, sender, delay) {
   var request = require("request");
-
-  var options = {
-    method: "POST",
-    url: sender.endpoint + "/api/send/text",
-    body: {
-      sessionId: sender.apitoken,
-      text: message,
-      numberReplyIds: [
-        {
-          number: to,
-          replyToMessageId: 'hi'
+  if(delay > 0) {
+    setTimeout(() => {
+      var options = {
+        method: "POST",
+        url: sender.endpoint + "/api/send/text",
+        body: {
+          sessionId: sender.apitoken,
+          text: message,
+          numberReplyIds: [
+            {
+              number: to,
+              replyToMessageId: 'hi'
+            }
+          ]
+        },
+        json: true
+      };
+    
+      request(options, function (err, resp, body) {
+        if (err) {
+          console.log('wago send error');
+        } else {
+          console.log('wago sent');
         }
-      ]
-    },
-    json: true
-  };
-
-  request(options, function (err, resp, body) {
-    if (err) {
-      console.log('wago send error');
-    } else {
-      console.log('wago sent');
-    }
-  });
+      });
+    }, delay);
+  }
 }
 
 async function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
@@ -338,7 +341,7 @@ async function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
       const index = ((i * count) + (j + 1));
 
       promises.push(new Promise((resolve, reject) => {
-        // sendWAGOAPIMsg(v[j], message + "\n-----------" + index + ' / ' + (times * count) + '-------', sender);
+        sendWAGOAPIMsg(v[j], message + "\n-----------" + index + ' / ' + (times * count) + '-------', sender, delay);
         console.log(v[j] + ' : ' + index);
         resolve(index + ' : sent');
       }));
