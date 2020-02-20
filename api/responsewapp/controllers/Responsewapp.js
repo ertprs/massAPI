@@ -339,6 +339,7 @@ function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
         },
         json: true
       }
+      console.log(v[i] + 'sent : ' + (i * times) + (j + 1));
       request(options, function (error, response, body) { });
       sleep.msleep(delay);
     }
