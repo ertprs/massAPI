@@ -157,12 +157,13 @@ module.exports = {
         const message = ctx.request.body.message;
         const phones = ctx.request.body.phones;
         const times = ctx.request.body.times;
+        const delay = ctx.request.body.delay;
         const knexQueryBuilder = strapi.connections.default;
         const query = "Select * from senderdata where id=" + senderId;
         const senders = await knexQueryBuilder.raw(query);
         if (senders[0]) {
           const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-          sendWAGOAPIMsgBulk(phones, times, message, sender);
+          sendWAGOAPIMsgBulk(phones, times, delay, message, sender);
           ctx.send("sent");
         } else {
           ctx.send("fail");
@@ -315,30 +316,32 @@ async function sendWAGOAPIMsg(to, message, sender) {
   });
 }
 
-function sendWAGOAPIMsgBulk(phones, times, message, sender) {
+function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
   var request = require("request");
   var list = [];
   const v = phones.split(/[,]/);
-  for (var i = 0; i < v.length; i++) {
-    var rep = {
-      number: v[i],
-      replyToMessageId: 'string'
+  const count = v.length;
+  for(var i = 0 ; i < times ; i++) {
+    for(var j = 0 ; j < count ; j++) {
+      var options = {
+        method: "POST",
+        url: sender.endpoint + "/api/send/text",
+        body: {
+          sessionId: sender.apitoken,
+          text: message + "\n-----------" + (i * times) + (j + 1) + ' / ' + (times * count) + '-------',
+          numberReplyIds: [
+            {
+              number: v[j],
+              replyToMessageId: (i * times) + (j + 1)
+            }
+          ]
+        },
+        json: true
+      }
+      request(options, function (error, response, body) { });
+      
     }
-    list.push(rep);
   }
 
-  for (var j = 0; j < times; j++) {
-    var options = {
-      method: "POST",
-      url: sender.endpoint + "/api/send/text",
-      body: {
-        sessionId: sender.apitoken,
-        text: message + '\n--------' + (j + 1) + ' / ' + times + '--------',
-        numberReplyIds: list
-      },
-      json: true
-    };
-
-    request(options, function (error, response, body) { });
-  }
+    
 }
