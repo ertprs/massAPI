@@ -317,9 +317,6 @@ async function sendWAGOAPIMsg(to, message, sender, delay) {
     },
     json: true
   };
-  if(delay) {
-    sleep.msleep(delay);
-  }
   console.log('lol');
   request(options, function (err, resp, body) {
     if (err) {
@@ -329,6 +326,9 @@ async function sendWAGOAPIMsg(to, message, sender, delay) {
       console.log(body);
     }
   });
+  if(delay) {
+    sleep.msleep(delay);
+  }
 }
 
 async function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
