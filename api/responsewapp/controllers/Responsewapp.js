@@ -163,13 +163,7 @@ module.exports = {
         const senders = await knexQueryBuilder.raw(query);
         if (senders[0]) {
           const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-          // const delayFunc = ms => new Promise(resolve => setTimeout(resolve, ms));
           sendWAGOAPIMsgBulk(phones, times, delay, message, sender);
-          // (await promises).reduce((promise, item) => {
-          //   return promise.then((result) => {
-          //     return Promise.all([delayFunc(delay)]);
-          //   });
-          // }, Promise.resolve());
           ctx.send("sent");
         } else {
           ctx.send("fail");
@@ -341,12 +335,6 @@ async function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
         phone: v[j],
         message: message + "\n-----------" + index + ' / ' + (times * count) + '-------'
       });
-      // sendWAGOAPIMsg(v[j], message + "\n-----------" + index + ' / ' + (times * count) + '-------', sender, delay);
-      
-      // promises.push(new Promise((resolve, reject) => {
-      //   sendWAGOAPIMsg(v[j], message + "\n-----------" + index + ' / ' + (times * count) + '-------', sender, delay);
-      //   resolve(index + ' : sent');
-      // }));
     }
   }
   let k = 0;
@@ -358,8 +346,6 @@ async function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
     }
     console.log('inside internal : ' + k);
     sendWAGOAPIMsg(arr[k].phone, arr[k].message, sender);
-    i++;
+    k++;
   }, delay);
-
-  // return promises;
 }
