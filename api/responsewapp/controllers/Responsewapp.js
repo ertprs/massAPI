@@ -163,13 +163,13 @@ module.exports = {
         const senders = await knexQueryBuilder.raw(query);
         if (senders[0]) {
           const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-          const delayFunc = ms => new Promise(resolve => setTimeout(resolve, ms));
-          let promises = sendWAGOAPIMsgBulk(phones, times, delay, message, sender);
-          (await promises).reduce((promise, item) => {
-            return promise.then((result) => {
-              return Promise.all([delayFunc(delay)]);
-            });
-          }, Promise.resolve());
+          // const delayFunc = ms => new Promise(resolve => setTimeout(resolve, ms));
+          sendWAGOAPIMsgBulk(phones, times, delay, message, sender);
+          // (await promises).reduce((promise, item) => {
+          //   return promise.then((result) => {
+          //     return Promise.all([delayFunc(delay)]);
+          //   });
+          // }, Promise.resolve());
           ctx.send("sent");
         } else {
           ctx.send("fail");
