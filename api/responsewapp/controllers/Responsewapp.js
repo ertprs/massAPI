@@ -299,9 +299,8 @@ async function sendTelegramAPIMsg(to, message, sender) {
   })
 }
 
-async function sendWAGOAPIMsg(to, message, sender, delay) {
+async function sendWAGOAPIMsg(to, message, sender) {
   var request = require("request");
-  var sleep = require("sleep");
   var options = {
     method: "POST",
     url: sender.endpoint + "/api/send/text",
@@ -326,9 +325,6 @@ async function sendWAGOAPIMsg(to, message, sender, delay) {
       console.log(body);
     }
   });
-  // if(delay) {
-  //   sleep.msleep(delay);
-  // }
 }
 
 async function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
@@ -336,16 +332,31 @@ async function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
   
   const v = phones.split(/[,]/);
   const count = v.length;
-  let promises = [];
+  // let promises = [];
+  let arr = [];
   for (var i = 0; i < times; i++) {
     for (var j = 0; j < count; j++) {
       const index = ((i * count) + (j + 1));
-      promises.push(new Promise((resolve, reject) => {
-        sendWAGOAPIMsg(v[j], message + "\n-----------" + index + ' / ' + (times * count) + '-------', sender, delay);
-        resolve(index + ' : sent');
-      }));
+      arr.push({
+        phone: v[j],
+        message: message + "\n-----------" + index + ' / ' + (times * count) + '-------'
+      });
+      // sendWAGOAPIMsg(v[j], message + "\n-----------" + index + ' / ' + (times * count) + '-------', sender, delay);
+      
+      // promises.push(new Promise((resolve, reject) => {
+      //   sendWAGOAPIMsg(v[j], message + "\n-----------" + index + ' / ' + (times * count) + '-------', sender, delay);
+      //   resolve(index + ' : sent');
+      // }));
     }
   }
+  let i = 0;
+  let func = setInterval(() => {
+    if(i == times * count) {
+      clearInterval(func);
+    }
+    sendWAGOAPIMsg(arr[i].phone, arr[i].message, sender);
+    i++;
+  }, delay);
 
-  return promises;
+  // return promises;
 }
