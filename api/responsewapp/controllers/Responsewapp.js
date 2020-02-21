@@ -167,7 +167,7 @@ module.exports = {
           let promises = sendWAGOAPIMsgBulk(phones, times, delay, message, sender);
           (await promises).reduce((promise, item) => {
             return promise.then((result) => {
-              return Promise.all([delayFunc(delay), item]);
+              return Promise.all([delayFunc(delay)]);
             });
           }, Promise.resolve());
           ctx.send("sent");
