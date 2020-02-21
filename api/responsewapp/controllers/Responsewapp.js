@@ -163,14 +163,14 @@ module.exports = {
         const senders = await knexQueryBuilder.raw(query);
         if (senders[0]) {
           const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-          await Promise.all(sendWAGOAPIMsgBulk(phones, times, delay, message, sender))
-            .then(res => {
-              ctx.send("sent");
-            })
-            .catch(err => {
-              ctx.send("fail");
+          const delayFunc = ms => new Promise(resolve => setTimeout(resolve, ms));
+          let promises = sendWAGOAPIMsgBulk(phones, times, delay, message, sender);
+          (await promises).reduce((promise, item) => {
+            return promise.then((result) => {
+              return Promise.all([delayFunc(delay), item]);
             });
-
+          }, Promise.resolve());
+          ctx.send("sent");
         } else {
           ctx.send("fail");
         }
@@ -341,8 +341,7 @@ async function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
     for (var j = 0; j < count; j++) {
       const index = ((i * count) + (j + 1));
       promises.push(new Promise((resolve, reject) => {
-        await sendWAGOAPIMsg(v[j], message + "\n-----------" + index + ' / ' + (times * count) + '-------', sender, delay);
-        console.log(v[j] + ' : ' + index, delay);
+        sendWAGOAPIMsg(v[j], message + "\n-----------" + index + ' / ' + (times * count) + '-------', sender, delay);
         resolve(index + ' : sent');
       }));
     }
