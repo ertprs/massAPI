@@ -349,14 +349,15 @@ async function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
       // }));
     }
   }
-  let i = 0;
+  let k = 0;
   let func = setInterval(() => {
-    if(i == times * count) {
+    console.log('inside internal : ' + k);
+    if(k == times * count) {
       clearInterval(func);
       return 1;
     }
-    console.log('inside internal : ' + i);
-    sendWAGOAPIMsg(arr[i].phone, arr[i].message, sender);
+    console.log('inside internal : ' + k);
+    sendWAGOAPIMsg(arr[k].phone, arr[k].message, sender);
     i++;
   }, delay);
 
