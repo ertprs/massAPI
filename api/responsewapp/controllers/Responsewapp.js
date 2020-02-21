@@ -318,7 +318,7 @@ async function sendWAGOAPIMsg(to, message, sender, delay) {
     json: true
   };
   console.log('lol');
-  request(options, function (err, resp, body) {
+  await request(options, function (err, resp, body) {
     if (err) {
       console.log('wago send error');
     } else {
@@ -341,7 +341,7 @@ async function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
     for (var j = 0; j < count; j++) {
       const index = ((i * count) + (j + 1));
       promises.push(new Promise((resolve, reject) => {
-        sendWAGOAPIMsg(v[j], message + "\n-----------" + index + ' / ' + (times * count) + '-------', sender, delay);
+        await sendWAGOAPIMsg(v[j], message + "\n-----------" + index + ' / ' + (times * count) + '-------', sender, delay);
         console.log(v[j] + ' : ' + index, delay);
         resolve(index + ' : sent');
       }));
