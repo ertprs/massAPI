@@ -150,6 +150,10 @@ module.exports = {
     }
   },
 
+  hookWAGOApiOther: async ctx => {
+    ctx.send('Find');
+  },
+
   sendWAGOBulkSendApi: async ctx => {
     try {
       if (ctx.request.body) {

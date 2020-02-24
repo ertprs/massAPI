@@ -87,6 +87,27 @@
       "method": "POST",
       "path": "/WAGO/BulkSendApi",
       "handler": "Responsewapp.sendWAGOBulkSendApi"
+    },
+    {
+      "method": "POST",
+      "path": "/hookWAGOApi/message/doc",
+      "handler": "Responsewapp.hookWAGOApiOther"
+    },
+    {
+      "method": "POST",
+      "path": "/hookWAGOApi/message/image",
+      "handler": "Responsewapp.hookWAGOApiOther"
+    },
+    {
+      "method": "POST",
+      "path": "/hookWAGOApi/message/video",
+      "handler": "Responsewapp.hookWAGOApiOther"
+    },
+    {
+      "method": "POST",
+      "path": "/hookWAGOApi/message/audio",
+      "handler": "Responsewapp.hookWAGOApiOther"
     }
+
   ]
 }
