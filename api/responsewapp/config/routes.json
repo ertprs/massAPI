@@ -88,6 +88,6 @@
       "method": "POST",
       "path": "/WAGO/BulkSendApi",
       "handler": "Responsewapp.sendWAGoBulkSendApi"
-    },
+    }
   ]
 }
