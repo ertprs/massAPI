@@ -17,7 +17,7 @@ module.exports = {
         if (sender.conn == "on") {
           const finded = await findMessage(event.body, sender);
           if (finded) {
-            sendMercuryMsg(event, finded, sender)
+            sendWAMercuryApiMsg(event, finded.response, sender)
           }
         }
       }
@@ -40,15 +40,23 @@ module.exports = {
           if (sender.conn == "on") {
             const finded = await findMessage(event.body, sender);
             if (finded) {
-              sendChatAPIMsg(event, finded, sender);
+              sendWAChatApiMsg(event.author.split("@")[0], finded.response, sender);
+              ctx.send('Sent');
+            } else {
+              ctx.send('Message not found');
             }
+          } else {
+            ctx.send('Sender is off');
           }
+        } else {
+          ctx.send('Sender not found');
         }
       }
     }
   },
 
-  hookWrapperApi: async ctx => {
+  // hook for WhatsApp Python Api
+  hookWAPythonApi: async ctx => {
     try {
       if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
         const event = ctx.request.body.messages[0];
@@ -64,17 +72,59 @@ module.exports = {
             if (sender.conn == "on") {
               const finded = await findMessage(event.body, sender);
               if (finded) {
-                sendWrapperAPIMsg(event.author.split("@")[0], finded.response, sender)
+                sendWAPythonApiMsg(event.author.split("@")[0], finded.response, sender);
+                ctx.send('Sent');
+              } else {
+                ctx.send('Message not found');
               }
+            } else {
+              ctx.send('Sender is off');
             }
+          } else {
+            ctx.send('Sender not found');
           }
         }
       }
     } catch (e) {
+      ctx.send('Error');
     }
   },
 
-  hookWhatsOfficialApi: async ctx => {
+  // hook for Telegram Python Api
+  hookTGPythonApi: async ctx => {
+    try {
+      if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
+        const event = ctx.request.body.messages[0];
+        if (event.type === 'chat' && event.body && !event.fromMe) {
+          const knexQueryBuilder = strapi.connections.default;
+          const query = "Select * from senderdata where type='TG.Python' and phone='" + event.to.phone + "'";
+          const senders = await knexQueryBuilder.raw(query);
+  
+          if (senders[0]) {
+            const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
+            if (sender.conn == "on") {
+              const finded = await findMessage(event.body, sender);
+              if (finded) {
+                sendTGPythonApiMsg(event.chat.phone, finded.response, sender);
+                ctx.send('Sent');
+              } else {
+                ctx.send('Message not found');
+              }
+            } else {
+              ctx.send('Sender is off');
+            }
+          } else {
+            ctx.send('Sender not found');
+          }
+        }
+      }
+    } catch(e) {
+      ctx.send('Error');
+    }
+  },
+
+  // hook for WhatsApp Official Api
+  hookWAOfficialApi: async ctx => {
     try {
       if (ctx.request.body) {
         const event = ctx.request.body;
@@ -87,39 +137,26 @@ module.exports = {
             if (sender.conn == "on") {
               const finded = await findMessage(event['message-in'], sender);
               if (finded) {
-                sendWhatsOfficialAPIMsg(event.number, finded.response, sender);
+                sendWAOfficialApiMsg(event.number, finded.response, sender);
+                ctx.send('Sent');
+              } else {
+                ctx.send('Message not found');
               }
+            } else {
+              ctx.send('Sender is off');
             }
+          } else {
+            ctx.send('Sender not found');
           }
         }
       }
     } catch (e) {
-
+      ctx.send('Error');
     }
   },
 
-  hookTelegramApi: async ctx => {
-    if (ctx.request.body && ctx.request.body.messages && ctx.request.body.messages.length > 0) {
-      const event = ctx.request.body.messages[0];
-      if (event.type === 'chat' && event.body && !event.fromMe) {
-        const knexQueryBuilder = strapi.connections.default;
-        const query = "Select * from senderdata where type='TG.Python' and phone='" + event.to.phone + "'";
-        const senders = await knexQueryBuilder.raw(query);
-
-        if (senders[0]) {
-          const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-          if (sender.conn == "on") {
-            const finded = await findMessage(event.body, sender);
-            if (finded) {
-              sendTelegramAPIMsg(event.chat.phone, finded.response, sender);
-            }
-          }
-        }
-      }
-    }
-  },
-
-  hookWAGOApi: async ctx => {
+  // hook for WhatsApp GO Api
+  hookWAGoApi: async ctx => {
     try {
       if (ctx.request.body) {
         const event = ctx.request.body;
@@ -131,9 +168,8 @@ module.exports = {
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
             if (sender.conn == "on") {
               const finded = await findMessage(event.text, sender);
-
               if (finded) {
-                sendWAGOAPIMsg(event.from, finded.response, sender, 0);
+                sendWaGoApiMsg(event.from, finded.response, sender, 0, "Text", "");
                 ctx.send('Sent');
               } else {
                 ctx.send('Not found');
@@ -150,11 +186,13 @@ module.exports = {
     }
   },
 
+  // 
   hookWAGOApiOther: async ctx => {
     ctx.send('Find');
   },
 
-  sendWAGOBulkSendApi: async ctx => {
+  // send bulk message api endpoint
+  sendWAGoBulkSendApi: async ctx => {
     try {
       if (ctx.request.body) {
         const senderId = ctx.request.body.senderId;
@@ -162,12 +200,15 @@ module.exports = {
         const phones = ctx.request.body.phones;
         const times = ctx.request.body.times;
         const delay = ctx.request.body.delay;
+        const attachUrl = ctx.request.body.attachUrl;
+        const attachType = ctx.request.body.attachType;
+
         const knexQueryBuilder = strapi.connections.default;
         const query = "Select * from senderdata where id=" + senderId;
         const senders = await knexQueryBuilder.raw(query);
         if (senders[0]) {
           const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
-          sendWAGOAPIMsgBulk(phones, times, delay, message, sender);
+          sendWaGoApiMsgBulk(phones, times, delay, message, sender, attachType, attachUrl);
           ctx.send("sent");
         } else {
           ctx.send("fail");
@@ -179,9 +220,10 @@ module.exports = {
   }
 };
 
-async function findMessage(message, senderData) {
-  const asterik = await strapi.services.responsewapp.findOne({ message: '*', autoreply: senderData.autoreply, blocked: 0 });
-  const responses = await strapi.services.responsewapp.find({ autoreply: senderData.autoreply, blocked: 0 });
+// find response
+async function findMessage(message, sender) {
+  const asterik = await strapi.services.responsewapp.findOne({ message: '*', autoreply: sender.autoreply, blocked: 0 });
+  const responses = await strapi.services.responsewapp.find({ autoreply: sender.autoreply, blocked: 0 });
   if (responses) {
     let asterik_order = 99999;
     if (asterik) {
@@ -198,14 +240,14 @@ async function findMessage(message, senderData) {
   }
 }
 
-async function sendMercuryMsg(event, obj, sender) {
+// send whatsapp message via mercury api
+async function sendWAMercuryApiMsg(event, message, sender) {
   var request = require("request");
-  //let user = await strapi.services.senderdata.findOne({ type:  });
   var options = {
     method: "POST",
     url: "https://api.mercury.chat/sdk/whatsapp/sendMessage",
     qs: {
-      api_token: senderData.apitoken,
+      api_token: sender.apitoken,
       instance: event.data.instance_number
     },
     headers: {
@@ -214,7 +256,7 @@ async function sendMercuryMsg(event, obj, sender) {
       Accept: "*/*",
       "Content-Type": "application/json"
     },
-    body: { body: obj.response, phone: event.data.author.split("@")[0] },
+    body: { body: message, phone: event.data.author.split("@")[0] },
     json: true
   };
   request(options, function (error, response, body) {
@@ -224,12 +266,13 @@ async function sendMercuryMsg(event, obj, sender) {
   });
 }
 
-async function sendChatAPIMsg(event, obj, sender) {
+// send whatsapp message via chat api
+async function sendWAChatApiMsg(to, message, sender) {
   var request = require("request");
   var options = {
     method: "POST",
     url: sender.endpoint + '/sendMessage?token=' + sender.apitoken,
-    body: { body: obj.response, phone: event.author.split("@")[0] },
+    body: { body: message, phone: to },
     json: true
   };
 
@@ -238,7 +281,8 @@ async function sendChatAPIMsg(event, obj, sender) {
   });
 }
 
-async function sendWrapperAPIMsg(to, message, sender) {
+// send whatsapp message via python api
+async function sendWAPythonApiMsg(to, message, sender) {
   var request = require("request");
   var options = {
     method: "POST",
@@ -256,7 +300,8 @@ async function sendWrapperAPIMsg(to, message, sender) {
   });
 }
 
-async function sendWhatsOfficialAPIMsg(to, message, sender) {
+// send whatsapp message via official api
+async function sendWAOfficialApiMsg(to, message, sender) {
   var request = require("request");
   var options = {
     method: "POST",
@@ -279,7 +324,8 @@ async function sendWhatsOfficialAPIMsg(to, message, sender) {
   });
 }
 
-async function sendTelegramAPIMsg(to, message, sender) {
+// send telegram message via python api
+async function sendTGPythonApiMsg(to, message, sender) {
   var request = require("request");
   var options = {
     method: "POST",
@@ -297,24 +343,11 @@ async function sendTelegramAPIMsg(to, message, sender) {
   })
 }
 
-async function sendWAGOAPIMsg(to, message, sender) {
+// send whatsapp message and attach via go api
+async function sendWaGoApiMsg(to, message, sender, type, attach) {
   var request = require("request");
-  var options = {
-    method: "POST",
-    url: sender.endpoint + "/api/send/text",
-    body: {
-      sessionId: sender.apitoken,
-      text: message,
-      numberReplyIds: [
-        {
-          number: to,
-          replyToMessageId: 'hi'
-        }
-      ]
-    },
-    json: true
-  };
-  console.log('lol');
+  var options = createWAGOOption(to, message, sender, type, attach);
+
   request(options, function (err, resp, body) {
     if (err) {
       console.log('wago send error');
@@ -325,12 +358,73 @@ async function sendWAGOAPIMsg(to, message, sender) {
   });
 }
 
-async function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
-  // var request = require("request");
-  
+// generate whatsapp option for go api
+async function createWAGOOption(to, message, sender, type, attachUrl) {
+  var numOpt = { number: to, replyToMessageId: 'string' };
+
+  if (type == 'Text') {
+    return {
+      method: "POST",
+      url: sender.endpoint + "/api/send/text",
+      body: {
+        sessionId: sender.apitoken,
+        text: message,
+        numberReplyIds: [numOpt]
+      },
+      json: true
+    };
+  } else if (type == 'Doc') {
+    return {
+      method: "POST",
+      url: sender.endpoint + "/api/send/doc",
+      body: {
+        sessionId: sender.apitoken,
+        doc: attachUrl,
+        title: message,
+        numberReplyIds: [numOpt]
+      },
+      json: true
+    }
+  } else if (type == 'Audio') {
+    return {
+      method: "POST",
+      url: sender.endpoint + "/api/send/audio",
+      body: {
+        sessionId: sender.apitoken,
+        audio: attachUrl,
+        numberReplyIds: [numOpt]
+      }
+    }
+  } else if (type == 'Vieo') {
+    return {
+      method: "POST",
+      url: sender.endpoint + "/api/send/video",
+      body: {
+        sessionId: sender.apitoken,
+        video: attachUrl,
+        caption: message,
+        numberReplyIds: [numOpt]
+      }
+    }
+  } else if (type == 'Image') {
+    return {
+      method: "POST",
+      url: sender.endpoint + "/api/send/image",
+      body: {
+        sessionId: sender.apitoken,
+        image: attachUrl,
+        caption: message,
+        numberReplyIds: [numOpt]
+      }
+    }
+  }
+}
+
+// send whatsapp bulk message via go api
+async function sendWaGoApiMsgBulk(phones, times, delay, message, sender, type, attach) {
+
   const v = phones.split(/[,]/);
   const count = v.length;
-  // let promises = [];
   let arr = [];
   for (var i = 0; i < times; i++) {
     for (var j = 0; j < count; j++) {
@@ -342,14 +436,14 @@ async function sendWAGOAPIMsgBulk(phones, times, delay, message, sender) {
     }
   }
   let k = 0;
-  
+
   let func = setInterval(() => {
     console.log('inside internal : ' + (k + 1));
-    if(k == times * count) {
+    if (k == times * count) {
       clearInterval(func);
       return 1;
     }
-    sendWAGOAPIMsg(arr[k].phone, arr[k].message, sender);
+    sendWaGoApiMsg(arr[k].phone, arr[k].message, sender, type, attach);
     k++;
   }, delay);
 }

@@ -60,19 +60,20 @@
     },
     {
       "method": "POST",
-      "path": "/hookWrapperApi",
-      "handler": "Responsewapp.hookWrapperApi"
+      "path": "/wapphookWAPythonApi",
+      "handler": "Responsewapp.hookWAPythonApi"
+    },
+    {
+      "method": "POST",
+      "path": "/wapphookTGPythonApi",
+      "handler": "Responsewapp.hookTGPythonApi"
     },
     {
       "method": "POST",
       "path": "/hookWhatsOfficialApi",
-      "handler": "Responsewapp.hookWhatsOfficialApi"
+      "handler": "Responsewapp.hookWAOfficialApi"
     },
-    {
-      "method": "POST",
-      "path": "/hookTelegramApi",
-      "handler": "Responsewapp.hookTelegramApi"
-    },
+
     {
       "method": "POST",
       "path": "/wappapitoken",
@@ -81,33 +82,12 @@
     {
       "method": "POST",
       "path": "/hookWAGOApi/message/text",
-      "handler": "Responsewapp.hookWAGOApi"
+      "handler": "Responsewapp.hookWAGoApi"
     },
     {
       "method": "POST",
       "path": "/WAGO/BulkSendApi",
-      "handler": "Responsewapp.sendWAGOBulkSendApi"
+      "handler": "Responsewapp.sendWAGoBulkSendApi"
     },
-    {
-      "method": "POST",
-      "path": "/hookWAGOApi/message/doc",
-      "handler": "Responsewapp.hookWAGOApiOther"
-    },
-    {
-      "method": "POST",
-      "path": "/hookWAGOApi/message/image",
-      "handler": "Responsewapp.hookWAGOApiOther"
-    },
-    {
-      "method": "POST",
-      "path": "/hookWAGOApi/message/video",
-      "handler": "Responsewapp.hookWAGOApiOther"
-    },
-    {
-      "method": "POST",
-      "path": "/hookWAGOApi/message/audio",
-      "handler": "Responsewapp.hookWAGOApiOther"
-    }
-
   ]
 }
