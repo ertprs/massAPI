@@ -347,14 +347,14 @@ async function sendTGPythonApiMsg(to, message, sender) {
 async function sendWaGoApiMsg(to, message, sender, type, attach) {
   var request = require("request");
   var options = createWAGOOption(to, message, sender, type, attach);
-  console.log(options);
+  // console.log(options);
   request(options, function (err, resp, body) {
     if (err) {
-      console.log('wago send error');
-      console.log(err);
+      // console.log('wago send error');
+      // console.log(err);
     } else {
-      console.log('wago sent');
-      console.log(body);
+      // console.log('wago sent');
+      // console.log(body);
     }
   });
 }
@@ -362,7 +362,7 @@ async function sendWaGoApiMsg(to, message, sender, type, attach) {
 // generate whatsapp option for go api
 function createWAGOOption(to, message, sender, type, attachUrl) {
   var numOpt = { number: to, replyToMessageId: 'string' };
-  console.log(numOpt);
+  // console.log(numOpt);
   if (type == 'Text') {
     return {
       method: "POST",
@@ -440,11 +440,12 @@ async function sendWaGoApiMsgBulk(phones, times, delay, message, sender, type, a
     }
   }
   let k = 0;
-
+  console.log('sending ' + (times * count) + ' messages started');
   let func = setInterval(() => {
     console.log('inside internal : ' + (k + 1));
     if (k == times * count) {
       clearInterval(func);
+      console.log('sending ' + (times * count) + ' messages ended');
       return 1;
     }
     sendWaGoApiMsg(arr[k].phone, arr[k].message, sender, type, attach);
