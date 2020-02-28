@@ -360,7 +360,7 @@ async function sendWaGoApiMsg(to, message, sender, type, attach) {
 }
 
 // generate whatsapp option for go api
-async function createWAGOOption(to, message, sender, type, attachUrl) {
+function createWAGOOption(to, message, sender, type, attachUrl) {
   var numOpt = { number: to, replyToMessageId: 'string' };
   console.log(numOpt);
   if (type == 'Text') {
