@@ -347,10 +347,10 @@ async function sendTGPythonApiMsg(to, message, sender) {
 async function sendWaGoApiMsg(to, message, sender, type, attach) {
   var request = require("request");
   var options = createWAGOOption(to, message, sender, type, attach);
-  console.log(options);
   request(options, function (err, resp, body) {
     if (err) {
       console.log('wago send error');
+      console.log(err);
     } else {
       console.log('wago sent');
       console.log(body);
@@ -361,7 +361,7 @@ async function sendWaGoApiMsg(to, message, sender, type, attach) {
 // generate whatsapp option for go api
 async function createWAGOOption(to, message, sender, type, attachUrl) {
   var numOpt = { number: to, replyToMessageId: 'string' };
-
+  console.log(numOpt);
   if (type == 'Text') {
     return {
       method: "POST",
