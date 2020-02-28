@@ -397,7 +397,7 @@ function createWAGOOption(to, message, sender, type, attachUrl) {
       },
       json: true
     }
-  } else if (type == 'Vieo') {
+  } else if (type == 'Video') {
     return {
       method: "POST",
       url: sender.endpoint + "/api/send/video",
