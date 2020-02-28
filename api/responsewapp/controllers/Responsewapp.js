@@ -394,7 +394,8 @@ function createWAGOOption(to, message, sender, type, attachUrl) {
         sessionId: sender.apitoken,
         audio: attachUrl,
         numberReplyIds: [numOpt]
-      }
+      },
+      json: true
     }
   } else if (type == 'Vieo') {
     return {
@@ -405,7 +406,8 @@ function createWAGOOption(to, message, sender, type, attachUrl) {
         video: attachUrl,
         caption: message,
         numberReplyIds: [numOpt]
-      }
+      },
+      json: true
     }
   } else if (type == 'Image') {
     return {
@@ -416,7 +418,8 @@ function createWAGOOption(to, message, sender, type, attachUrl) {
         image: attachUrl,
         caption: message,
         numberReplyIds: [numOpt]
-      }
+      },
+      json: true
     }
   }
 }
