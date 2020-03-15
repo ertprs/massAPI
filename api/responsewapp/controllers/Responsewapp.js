@@ -346,6 +346,7 @@ async function sendTGPythonApiMsg(to, message, sender) {
 
 // send whatsapp message and attach via go api
 async function sendWaGoApiMsg(to, message, sender, type, attach) {
+  console.log('inside sending go-whats');
   var request = require("request");
   var options = createWAGOOption(to, message, sender, type, attach);
   // console.log(options);
