@@ -159,6 +159,7 @@ module.exports = {
   hookWAGoApi: async ctx => {
     try {
       console.log('hookWAGoApi');
+      console.log(ctx.request.body);
       if (ctx.request.body) {
         const event = ctx.request.body;
         if (event.fromMe == 'false' || event.fromMe == false) {
