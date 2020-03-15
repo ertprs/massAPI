@@ -163,6 +163,7 @@ module.exports = {
       if (ctx.request.body) {
         const event = ctx.request.body;
         if (event.fromMe == 'false' || event.fromMe == false) {
+          console.log('inside fromMe false');
           const knexQueryBuilder = strapi.connections.default;
           const query = "Select * from senderdata where type='WA.GO' and phone='" + event.to + "'";
           const senders = await knexQueryBuilder.raw(query);
