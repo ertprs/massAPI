@@ -160,15 +160,20 @@ module.exports = {
     try {
       if (ctx.request.body) {
         const event = ctx.request.body;
+        console.log(event.messageInfo);
         if (event.messageInfo.fromMe == 'false' || event.messageInfo.fromMe == false) {
+          console.log('inside fromMe');
           const knexQueryBuilder = strapi.connections.default;
           const query = "Select * from senderdata where type='WA.GO' and phone='" + event.messageInfo.to + "'";
           const senders = await knexQueryBuilder.raw(query);
+          console.log(query);
           if (senders[0]) {
+            console.log(senders[0]);
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
             if (sender.conn == "on") {
               const finded = await findMessage(event.text, sender);
               if (finded) {
+                console.log('before send');
                 sendWaGoApiMsg(event.messageInfo.from, finded.response, sender, 0, "Text", "");
                 ctx.send('Sent');
               } else {
