@@ -166,7 +166,9 @@ module.exports = {
           const knexQueryBuilder = strapi.connections.default;
           const query = "Select * from senderdata where type='WA.GO' and phone='" + event.to + "'";
           const senders = await knexQueryBuilder.raw(query);
+          
           if (senders[0]) {
+            console.log(senders[0]);
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
             if (sender.conn == "on") {
               const finded = await findMessage(event.text, sender);
