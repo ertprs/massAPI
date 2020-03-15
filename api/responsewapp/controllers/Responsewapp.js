@@ -348,12 +348,7 @@ async function sendTGPythonApiMsg(to, message, sender) {
 async function sendWaGoApiMsg(to, message, sender, type, attach) {
   console.log('inside sending go-whats');
   var request = require("request");
-  console.log(to);
-  console.log(message);
-  console.log(sender);
-  console.log(type);
   var options = createWAGOOption(to, message, sender, type, attach);
-  console.log(options);
   request(options, function (err, resp, body) {
     if (err) {
       // console.log('wago send error');
