@@ -169,6 +169,7 @@ module.exports = {
             if (sender.conn == "on") {
               const finded = await findMessage(event.text, sender);
               if (finded) {
+                console.log('before go whats send');
                 sendWaGoApiMsg(event.from, finded.response, sender, 0, "Text", "");
                 ctx.send('Sent');
               } else {
