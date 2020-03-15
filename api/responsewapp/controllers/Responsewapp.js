@@ -160,20 +160,15 @@ module.exports = {
     try {
       if (ctx.request.body) {
         const event = ctx.request.body;
-        console.log(event.messageInfo);
         if (event.messageInfo.fromMe == 'false' || event.messageInfo.fromMe == false) {
-          console.log('inside fromMe');
           const knexQueryBuilder = strapi.connections.default;
           const query = "Select * from senderdata where type='WA.GO' and phone='" + event.messageInfo.to + "'";
           const senders = await knexQueryBuilder.raw(query);
-          console.log(query);
           if (senders[0]) {
-            console.log(senders[0]);
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
             if (sender.conn == "on") {
               const finded = await findMessage(event.text, sender);
               if (finded) {
-                console.log('before send');
                 sendWaGoApiMsg(event.messageInfo.from, finded.response, sender, 0, "Text", "");
                 ctx.send('Sent');
               } else {
@@ -354,7 +349,6 @@ async function sendWaGoApiMsg(to, message, sender, type, attach) {
   console.log('inside sending go-whats');
   var request = require("request");
   var options = createWAGOOption(to, message, sender, type, attach);
-  // console.log(options);
   request(options, function (err, resp, body) {
     if (err) {
       // console.log('wago send error');
@@ -368,7 +362,12 @@ async function sendWaGoApiMsg(to, message, sender, type, attach) {
 
 // generate whatsapp option for go api
 function createWAGOOption(to, message, sender, type, attachUrl) {
-  var numOpt = { number: to, replyToMessageId: 'string' };
+  var numOpt = { 
+    number: to, 
+    replyTo: {
+      id: "",
+      fromMe: true
+    } };
   // console.log(numOpt);
   if (type == 'Text') {
     return {
