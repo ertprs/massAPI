@@ -158,24 +158,18 @@ module.exports = {
   // hook for WhatsApp GO Api
   hookWAGoApi: async ctx => {
     try {
-      console.log('hookWAGoApi');
-      console.log(ctx.request.body);
       if (ctx.request.body) {
         const event = ctx.request.body;
-        if (event.fromMe == 'false' || event.fromMe == false) {
-          console.log('inside fromMe false');
+        if (event.messageInfo.fromMe == 'false' || event.messageInfo.fromMe == false) {
           const knexQueryBuilder = strapi.connections.default;
           const query = "Select * from senderdata where type='WA.GO' and phone='" + event.to + "'";
           const senders = await knexQueryBuilder.raw(query);
-          
           if (senders[0]) {
-            console.log(senders[0]);
             const sender = Object.values(JSON.parse(JSON.stringify(senders[0])))[0];
             if (sender.conn == "on") {
               const finded = await findMessage(event.text, sender);
               if (finded) {
-                console.log('before go whats send');
-                sendWaGoApiMsg(event.from, finded.response, sender, 0, "Text", "");
+                sendWaGoApiMsg(event.messageInfo.from, finded.response, sender, 0, "Text", "");
                 ctx.send('Sent');
               } else {
                 ctx.send('Not found');
@@ -185,7 +179,8 @@ module.exports = {
             ctx.send('Not Found');
           }
         }
-
+      } else {
+        ctx.send('Error');
       }
     } catch (e) {
       ctx.send('Error');
