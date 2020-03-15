@@ -349,6 +349,7 @@ async function sendWaGoApiMsg(to, message, sender, type, attach) {
   console.log('inside sending go-whats');
   var request = require("request");
   var options = createWAGOOption(to, message, sender, type, attach);
+  console.log(options);
   request(options, function (err, resp, body) {
     if (err) {
       // console.log('wago send error');
