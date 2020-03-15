@@ -158,6 +158,7 @@ module.exports = {
   // hook for WhatsApp GO Api
   hookWAGoApi: async ctx => {
     try {
+      console.log('hookWAGoApi');
       if (ctx.request.body) {
         const event = ctx.request.body;
         if (event.fromMe == 'false' || event.fromMe == false) {
