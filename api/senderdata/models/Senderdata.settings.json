@@ -38,6 +38,9 @@
     },
     "conn": {
       "type": "string"
+    },
+    "order": {
+      "type": "integer"
     }
   }
 }
