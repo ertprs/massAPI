@@ -17,12 +17,12 @@
     "name": {
       "type": "string"
     },
+    "description": {
+      "type": "string"
+    },
     "user": {
       "model": "user",
       "plugin": "users-permissions"
-    },
-    "description": {
-      "type": "string"
     }
   }
 }

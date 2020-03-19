@@ -26,13 +26,13 @@
     "emailSend": {
       "type": "boolean"
     },
-    "user": {
-      "model": "user",
-      "plugin": "users-permissions"
-    },
     "prefix": {
       "default": "+1",
       "type": "string"
+    },
+    "user": {
+      "model": "user",
+      "plugin": "users-permissions"
     }
   }
 }

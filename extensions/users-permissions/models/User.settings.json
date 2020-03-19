@@ -67,6 +67,9 @@
     "indexCampaign": {
       "type": "integer",
       "default": "1"
+    },
+    "line_limit": {
+      "type": "integer"
     }
   }
 }

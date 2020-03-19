@@ -26,10 +26,6 @@
     "phone": {
       "type": "string"
     },
-    "user": {
-      "model": "user",
-      "plugin": "users-permissions"
-    },
     "endpoint": {
       "type": "string"
     },
@@ -41,6 +37,10 @@
     },
     "order": {
       "type": "integer"
+    },
+    "user": {
+      "model": "user",
+      "plugin": "users-permissions"
     }
   }
 }
