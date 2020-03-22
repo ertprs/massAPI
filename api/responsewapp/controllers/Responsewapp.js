@@ -126,8 +126,10 @@ module.exports = {
   // hook for WhatsApp Official Api
   hookWAOfficialApi: async ctx => {
     try {
+      console.log('Official');
       if (ctx.request.body) {
         const event = ctx.request.body;
+        console.log(event);
         if (event.type === 1 && event['message-in']) {
           const knexQueryBuilder = strapi.connections.default;
           const query = "Select * from senderdata where type='WA.Official' and phone='" + event.owner + "'";
