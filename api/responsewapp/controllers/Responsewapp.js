@@ -126,7 +126,7 @@ module.exports = {
   // hook for WhatsApp Official Api
   hookWAOfficialApi: async ctx => {
     try {
-      console.log('Official');
+      console.log('official');
       if (ctx.request.body) {
         const event = ctx.request.body;
         console.log(event);
