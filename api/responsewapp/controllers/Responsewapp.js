@@ -312,7 +312,7 @@ async function sendWAOfficialApiMsg(to, message, sender) {
     body: {
       token: sender.apitoken,
       application: 8,
-      globalmessage: obj.response,
+      globalmessage: message,
       data: [
         {
           number: to,
